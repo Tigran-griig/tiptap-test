@@ -1,0 +1,104 @@
+.ProseMirror {
+  min-height: 250px;
+  width: 100%;
+  height: auto;
+  > * + * {
+    margin-top: 0.75em;
+  }
+  > h1{
+    font-size: 2em;
+  }
+  > h2{
+    font-size: 1.5em;
+  }
+  > h3{
+    font-size: 1.17em;
+  }
+  > h4{
+    font-size: 1em;
+  }
+  > h5{
+    font-size: .83em;
+  }
+  > h6{
+    font-size: .67em;
+  }
+  blockquote {
+    border-left: 3px solid rgba(#0d0d0d, 0.1);
+    padding-left: 1rem;
+  }
+  ::selection {
+    background: #D1FAE5;
+  }
+
+  a {
+    color: #232323;
+    font-weight: bold;
+    text-decoration: underline  #35B996 2px;
+    font-size: 19px;
+    line-height: 28px;
+  }
+
+  code {
+    background-color: rgba(#616161, 0.1);
+    border-radius: 0.25em;
+    box-decoration-break: clone;
+    color: #616161;
+    font-size: 0.9rem;
+    padding: 0.25em;
+  }
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+.ProseMirror p.is-editor-empty:first-child::before {
+  font-size: 28px;
+  font-weight: 700;
+  color: #BCBCBC;
+  content: attr(data-placeholder);
+  font-family: PC sans, sans-serif;
+}
+/* Basic editor styles */
+.ProseMirror {
+  > * + * {
+    margin-top: 0.75em;
+  }
+}
+
+/* Placeholder (at the top) */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Give a remote user a caret */
+.collaboration-cursor__caret {
+  border-left: 1px solid #0d0d0d;
+  border-right: 1px solid #0d0d0d;
+  margin-left: -1px;
+  margin-right: -1px;
+  pointer-events: none;
+  position: relative;
+  word-break: normal;
+}
+
+/* Render the username above the caret */
+.collaboration-cursor__label {
+  border-radius: 3px 3px 3px 0;
+  color: #0d0d0d;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  left: -1px;
+  line-height: normal;
+  padding: 0.1rem 0.3rem;
+  position: absolute;
+  top: -1.4em;
+  user-select: none;
+  white-space: nowrap;
+}
+
