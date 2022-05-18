@@ -1,3 +1,4 @@
+import React, {useState} from "react"
 import {useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from '@tiptap/extension-placeholder'
@@ -7,20 +8,41 @@ import TextStyle from '@tiptap/extension-text-style'
 import {Color} from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 import Blockquote from '@tiptap/extension-blockquote'
+import * as Y from "yjs"
+import {OrderedList} from "@tiptap/extension-ordered-list";
+import {useUserState} from "@/Providers";
+import {Underline} from "@tiptap/extension-underline";
+import {Document} from "@tiptap/extension-document";
+
+const yDoc = new Y.Doc()
+console.log(yDoc, "yDoc")
 
 export const useTextEditor = () => {
+    const {user} = useUserState();
+    // const [editorState, setEditorState] = useState<string>();
+
+    console.log(user, "9876543")
     const editor = useEditor({
         extensions: [
+            Document,
             StarterKit,
             Text,
             TextStyle,
             FontFamily,
             Color,
             Blockquote,
+            OrderedList,
+            Underline,
+            // Collaboration,
+            OrderedList.configure({
+                itemTypeName: 'listItem',
+            }),
             Link.configure({
                 openOnClick: false,
             }),
-
+            // CollaborationCursor.configure({
+            //     user: user,
+            // }),
             Placeholder.configure({
                 placeholder: 'New story',
             }),
@@ -29,8 +51,8 @@ export const useTextEditor = () => {
                 history: false,
             }),
         ],
-
-        content: `<h2>
+        content: `
+             <h2>
         Hi there,
       </h2>
       <p>
@@ -60,6 +82,12 @@ export const useTextEditor = () => {
       </blockquote>
     `,
     });
+
+    // React.useEffect(() => {
+    //     if (editor) {
+    //         editor.chain().focus()?.user({name:'sadfg',color:"sdfsdg"}).run();
+    //     }
+    // }, [editor]);
 
     return {
         editor

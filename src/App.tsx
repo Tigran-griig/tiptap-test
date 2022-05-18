@@ -1,19 +1,18 @@
 import React from 'react';
 import TextEditor from "./components/TextEditor";
-import {Grid,Box} from "@mui/material";
+import {Block} from "@/Block";
 
 function App() {
     return (
-        <div className="App">
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-
-                <Grid xs={3}>
-                    <span>Navbar</span>
-                </Grid>
-                <Grid xs={6}>
+        <div className="root">
+            <Block className={"container"}>
+                <Block className={"root-left-section"}>
+                    <div>Navbar</div>
+                </Block>
+                <Block className={"root-right-section"}>
                     <TextEditor/>
-                </Grid>
-            </Grid>
+                </Block>
+            </Block>
         </div>
     );
 }

@@ -1,23 +1,23 @@
 import React from 'react';
 import EditorBar from "../EditorBar/index";
-import {useTextEditor} from "../../hooks/TextEditor/useTextEditor";
-import {Grid, ListItem} from '@mui/material';
+import {useTextEditor} from "@/hooks/TextEditor/useTextEditor";
 import {EditorContent} from "@tiptap/react";
 
 import "./index.scss";
+import { Block } from '@/Block';
 
 const TextEditor = () => {
     const {editor} = useTextEditor()
 
     return (
-        <Grid container rowSpacing={1} columnSpacing={1}>
-            <ListItem>
+        <Block className={"editor-container"}>
+            <Block className={"tabBar"}>
                 <EditorBar editor={editor}/>
-            </ListItem>
-            <ListItem>
+            </Block>
+            <Block className={"textEditor"}>
                 <EditorContent editor={editor}/>
-            </ListItem>
-        </Grid>
+            </Block>
+        </Block>
     );
 };
 
