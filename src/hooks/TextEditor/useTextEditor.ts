@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {useEditor} from '@tiptap/react'
+import {JSONContent, Mark, useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from '@tiptap/extension-placeholder'
 import {Text} from '@tiptap/extension-text'
@@ -8,20 +8,16 @@ import TextStyle from '@tiptap/extension-text-style'
 import {Color} from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 import Blockquote from '@tiptap/extension-blockquote'
-import * as Y from "yjs"
 import {OrderedList} from "@tiptap/extension-ordered-list";
 import {useUserState} from "@/Providers";
 import {Underline} from "@tiptap/extension-underline";
 import {Document} from "@tiptap/extension-document";
 
-const yDoc = new Y.Doc()
-console.log(yDoc, "yDoc")
-
 export const useTextEditor = () => {
     const {user} = useUserState();
-    // const [editorState, setEditorState] = useState<string>();
+    const [editorState, setEditorState] = useState<JSONContent>()
+    const documentElement: Element | undefined = document.querySelector(".element") ?? undefined; //tag for custom  editor
 
-    console.log(user, "9876543")
     const editor = useEditor({
         extensions: [
             Document,
@@ -33,26 +29,25 @@ export const useTextEditor = () => {
             Blockquote,
             OrderedList,
             Underline,
-            // Collaboration,
+            Mark.create({
+                footnote: false,
+            }),
+            StarterKit.configure({
+                // The Collaboration extension comes with its own history handling
+                history: false,
+            }),
             OrderedList.configure({
                 itemTypeName: 'listItem',
             }),
             Link.configure({
                 openOnClick: false,
             }),
-            // CollaborationCursor.configure({
-            //     user: user,
-            // }),
             Placeholder.configure({
                 placeholder: 'New story',
             }),
-            StarterKit.configure({
-                // The Collaboration extension comes with its own history handling
-                history: false,
-            }),
         ],
         content: `
-             <h2>
+      <h2>
         Hi there,
       </h2>
       <p>
@@ -82,13 +77,6 @@ export const useTextEditor = () => {
       </blockquote>
     `,
     });
-
-    // React.useEffect(() => {
-    //     if (editor) {
-    //         editor.chain().focus()?.user({name:'sadfg',color:"sdfsdg"}).run();
-    //     }
-    // }, [editor]);
-
     return {
         editor
     }

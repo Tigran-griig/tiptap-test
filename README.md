@@ -45,3 +45,19 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 # tiptap-test
+
+
+#Toolbar `Commands`<br/>
+
+#.Marks
+Bold - (ctrl+b/cmd+b) <br/>
+Italic - (ctrl+i/cmd+i)<br/>
+Underline - (ctrl+u/cmd+u)<br/>
+Blockquote - (ctrl+shift+b/cmd+shift+b)<br/>
+Numbered list - (ctrl+shift+7/cmd+shift+7).<br/>
+Bullet list - (ctrl+shift+8/cmd+shift+8)<br/>
+Symbol – § – (ctrl+shift+s/cmd+shift+s) <br/>
+Symbol – ¶ – (ctrl+shift+p/cmd+shift+p)
+
+#.New nodes
+Footnote(comment) -(ctrl+alt+f/cmd+option+f)
