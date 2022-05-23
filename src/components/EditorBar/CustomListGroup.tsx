@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {FormatListBulletedIcon, FormatListNumberedIcon, MobileFriendlyRoundedIcon} from "@/components/MateriaLicon";
 import {classNames} from "@/helpers";
 import classes from "./tabBar.module.scss"
@@ -12,7 +12,8 @@ export const CustomListGroup = ({editor}: { editor: Editor | null }) => {
 
     return (
         <div className={classes.block}>
-            <MobileFriendlyRoundedIcon className={classNames(classes.icon)}/>
+            <MobileFriendlyRoundedIcon onClick={() => editor.chain().focus().setBlockquote().run()}
+                                       className={classNames(classes.icon)}/>
             <FormatListNumberedIcon className={classNames(classes.icon)}
                                     onClick={() => editor.chain().focus().toggleOrderedList().run()}/>
             <FormatListBulletedIcon className={classNames(classes.icon)}

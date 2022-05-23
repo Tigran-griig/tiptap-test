@@ -26,6 +26,7 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
   const [activeCommentsInstance, setActiveCommentsInstance] = React.useState<CommentInstance>({});
   console.log(commentText, "commentTe3xt", activeCommentsInstance, ":::::::::")
   const [allComments, setAllComments] = React.useState<any[]>([]);
+
   React.useEffect((): any => {
     setTimeout(findCommentsAndStoreValues, 100)
   }, []);
@@ -68,7 +69,6 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
       const parsedComment = JSON.parse(editor.getAttributes('comment').comment);
 
       parsedComment.comment = typeof parsedComment.comments === 'string' ? JSON.parse(parsedComment.comments) : parsedComment.comments;
-
       setActiveCommentsInstance(parsedComment)
     } else {
       setActiveCommentsInstance({})
@@ -79,15 +79,16 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
     if (!commentText.trim().length) return;
 
     const activeCommentInstance: CommentInstance = JSON.parse(JSON.stringify(activeCommentsInstance));
-
     const commentsArray = typeof activeCommentInstance.comments === 'string' ? JSON.parse(activeCommentInstance.comments) : activeCommentInstance.comments;
 
     if (commentsArray) {
+      let commentPositionNumber = commentsArray.length + 1
       commentsArray.push({
         projectId: project?.id ?? "anonymous",
         projectName: project?.projectName ?? "anonymous",
         time: Date.now(),
         content: commentText,
+        positionNumber:commentPositionNumber
       });
 
       const commentWithUuid = JSON.stringify({
@@ -104,11 +105,11 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
           projectName: project?.projectName ?? "anonymous",
           time: Date.now(),
           content: commentText,
+          positionNumber:1
         }],
       });
       editor?.chain().setComment(commentWithUuid).run();
     }
-
     setTimeout(() => setCommentText(''), 50);
   };
 
@@ -130,6 +131,9 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
     showCommentMenu,
     setShowCommentMenu,
     toggleCommentMode,
+    isCommentModeOn,
+    setIsCommentModeOn,
+    allComments,
   };
 };
 

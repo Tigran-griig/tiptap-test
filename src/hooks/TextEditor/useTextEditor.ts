@@ -1,58 +1,60 @@
-import { useEditor } from '@tiptap/react'
+import {useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Placeholder } from '@tiptap/extension-placeholder'
-import { Text } from '@tiptap/extension-text'
-import { FontFamily } from '@tiptap/extension-font-family'
+import {Placeholder} from '@tiptap/extension-placeholder'
+import {Text} from '@tiptap/extension-text'
+import {FontFamily} from '@tiptap/extension-font-family'
 import TextStyle from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
+import {Color} from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 import Blockquote from '@tiptap/extension-blockquote'
-import { OrderedList } from "@tiptap/extension-ordered-list";
-import { Underline } from "@tiptap/extension-underline";
-import { Document } from "@tiptap/extension-document";
-import { Mention } from '@tiptap/extension-mention'
-import { Comment } from '@/components/extensions/comment'
-import { useComment } from "../Comment/useComment"
+import {OrderedList} from "@tiptap/extension-ordered-list";
+import {Underline} from "@tiptap/extension-underline";
+import {Document} from "@tiptap/extension-document";
+import {Mention} from '@tiptap/extension-mention'
+import {Comment} from '@/components/extensions/comment'
+import {useComment} from "../Comment/useComment"
 import suggestion from "@/components/suggestion";
-import { useEditorState } from "@/Providers/Editor";
+import {useEditorState} from "@/Providers/Editor";
+import {HardBreak} from "@tiptap/extension-hard-break";
 
 
 export const useTextEditor = () => {
-  const { project } = useEditorState();
+    const {project} = useEditorState();
 
-  const editor = useEditor({
-    extensions: [
-      Comment,
-      Document,
-      StarterKit,
-      Text,
-      TextStyle,
-      FontFamily,
-      Color,
-      Blockquote,
-      OrderedList,
-      Underline,
-      Mention.configure({
-        HTMLAttributes: {
-          class: 'mention',
-        },
-        suggestion,
-      }),
-      StarterKit.configure({
-        // The Collaboration extension comes with its own history handling
-        history: false,
-      }),
-      OrderedList.configure({
-        itemTypeName: 'listItem',
-      }),
-      Link.configure({
-        openOnClick: false,
-      }),
-      Placeholder.configure({
-        placeholder: 'New story',
-      }),
-    ],
-    content: `
+    const editor = useEditor({
+        extensions: [
+            Comment,
+            Document,
+            StarterKit,
+            Text,
+            TextStyle,
+            FontFamily,
+            Color,
+            Blockquote,
+            OrderedList,
+            Underline,
+            HardBreak,
+            Mention.configure({
+                HTMLAttributes: {
+                    class: 'mention',
+                },
+                suggestion,
+            }),
+            StarterKit.configure({
+                // The Collaboration extension comes with its own history handling
+                history: false,
+            }),
+            OrderedList.configure({
+                itemTypeName: 'listItem',
+            }),
+            Link.configure({
+                openOnClick: false,
+            }),
+            Placeholder.configure({
+                placeholder: 'New story',
+            }),
+        ],
+        content: `
       <h2>
         Hi there,
       </h2>
@@ -93,20 +95,29 @@ export const useTextEditor = () => {
     },
   });
 
-  const {
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-    findCommentsAndStoreValues,
-  } = useComment({ editor, project} )
+    const {
+        setCommentText,
+        commentText,
+        setComment,
+        setCurrentComment,
+        findCommentsAndStoreValues,
+        showCommentMenu,
+        setShowCommentMenu,
+        isCommentModeOn,
+        setIsCommentModeOn,
+        allComments
+    } = useComment({editor, project})
 
-  return {
-    editor,
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-
-  }
+    return {
+        editor,
+        setCommentText,
+        commentText,
+        setComment,
+        setCurrentComment,
+        showCommentMenu,
+        setShowCommentMenu,
+        isCommentModeOn,
+        setIsCommentModeOn,
+        comments: allComments,
+    }
 }

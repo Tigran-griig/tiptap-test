@@ -270,7 +270,13 @@
 
 [data-comment]{
   background: red;
+  position:relative;
   ::after{
     content: "1";
+    position: absolute;
+    right: 0;
+    top:0;
+    color: #0d0d0d;
+    font-size: 12px;
   }
 }
