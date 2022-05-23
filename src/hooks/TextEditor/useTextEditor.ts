@@ -96,28 +96,20 @@ export const useTextEditor = () => {
   });
 
     const {
-        setCommentText,
         commentText,
+        allComments,
+        setCommentText,
         setComment,
         setCurrentComment,
         findCommentsAndStoreValues,
-        showCommentMenu,
-        setShowCommentMenu,
-        isCommentModeOn,
-        setIsCommentModeOn,
-        allComments
     } = useComment({editor, project})
 
     return {
         editor,
-        setCommentText,
         commentText,
+        comments: allComments,
+        setCommentText,
         setComment,
         setCurrentComment,
-        showCommentMenu,
-        setShowCommentMenu,
-        isCommentModeOn,
-        setIsCommentModeOn,
-        comments: allComments,
     }
 }

@@ -1,4 +1,4 @@
-import React, {Dispatch, Fragment, SetStateAction} from 'react';
+import React from 'react';
 import {Editor} from "@tiptap/react";
 import {mergeObjects} from "@/helpers";
 import {HeadingGroup} from "@/components/EditorBar/HeadingGroup";
@@ -11,12 +11,10 @@ import defaultClasses from "./tabBar.module.scss";
 interface EditorBarProps {
     editor: Editor | null;
     classes?: React.CSSProperties | undefined | null,
-    setShowCommentMenu: Dispatch<SetStateAction<boolean>>
-    showCommentMenu?:boolean;
 }
 
 const EditorBar = (props: EditorBarProps) => {
-    const {editor, setShowCommentMenu,showCommentMenu} = props;
+    const {editor} = props;
     const classes = mergeObjects(defaultClasses, props.classes);
 
     if (!editor) {
@@ -27,7 +25,7 @@ const EditorBar = (props: EditorBarProps) => {
             <CustomIconGroup editor={editor}/>
             <CustomListGroup editor={editor}/>
             <HeadingGroup editor={editor}/>
-            <CustomSymbolGroup  setShowCommentMenu={setShowCommentMenu}  showCommentMenu={showCommentMenu}  editor={editor}/>
+            <CustomSymbolGroup editor={editor}/>
         </div>
     )
 }

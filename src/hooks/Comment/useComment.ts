@@ -33,9 +33,10 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
 
   const findCommentsAndStoreValues = () => {
     const proseMirror = document.querySelector('.ProseMirror');
+    console.log(proseMirror,"proseMirrorproseMirror")
 
     const comments = proseMirror?.querySelectorAll('span[data-comment]');
-
+console.log(comments,"proceMIrror commenmts")
     const tempComments: any[] = [];
 
     if (!comments) {
@@ -57,6 +58,8 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
     });
 
     setAllComments(tempComments)
+    editor?.chain().setTextSelection(editor?.state.selection.to)
+    return  editor?.chain().insertContent("12")
   };
   const setCurrentComment = (editor: any) => {
     const newVal = editor.isActive('comment');

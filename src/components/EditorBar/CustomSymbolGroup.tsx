@@ -4,7 +4,7 @@ import classes from "./tabBar.module.scss";
 import {Editor} from "@tiptap/core";
 import {RedoIcon, UndoIcon,InsertPageBreakIcon} from "@/components/MateriaLicon";
 
-export const CustomSymbolGroup = ({editor,showCommentMenu,setShowCommentMenu}: { editor: Editor | null,showCommentMenu:any; setShowCommentMenu:any }) => {
+export const CustomSymbolGroup = ({editor}: { editor: Editor | null }) => {
 
     if (!editor) {
         return null
