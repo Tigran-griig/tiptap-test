@@ -1,4 +1,4 @@
-import {useEditor} from '@tiptap/react'
+import { useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from '@tiptap/extension-placeholder'
 import {Text} from '@tiptap/extension-text'
@@ -10,20 +10,16 @@ import Blockquote from '@tiptap/extension-blockquote'
 import {OrderedList} from "@tiptap/extension-ordered-list";
 import {Underline} from "@tiptap/extension-underline";
 import {Document} from "@tiptap/extension-document";
-import {Mention} from '@tiptap/extension-mention'
 import {Comment} from '@/components/extensions/comment'
 import {useComment} from "../Comment/useComment"
-import suggestion from "@/components/suggestion";
 import {useEditorState} from "@/Providers/Editor";
 import {HardBreak} from "@tiptap/extension-hard-break";
-
 
 export const useTextEditor = () => {
     const {project} = useEditorState();
 
     const editor = useEditor({
         extensions: [
-            Comment,
             Document,
             StarterKit,
             Text,
@@ -34,12 +30,13 @@ export const useTextEditor = () => {
             OrderedList,
             Underline,
             HardBreak,
-            Mention.configure({
-                HTMLAttributes: {
-                    class: 'mention',
-                },
-                suggestion,
-            }),
+            Comment,
+            // Mention.configure({
+            //     HTMLAttributes: {
+            //         class: 'mention',
+            //     },
+            //     suggestion,
+            // }),
             StarterKit.configure({
                 // The Collaboration extension comes with its own history handling
                 history: false,
@@ -84,32 +81,28 @@ export const useTextEditor = () => {
         — Mom
       </blockquote>
     `,
-    onUpdate({ editor }) {
-      findCommentsAndStoreValues();
-      setCurrentComment(editor);
-    },
-    editorProps: {
-      attributes: {
-        spellcheck: 'false',
-      },
-    },
-  });
+        onUpdate({editor}) {
+            commentProps.findCommentsAndStoreValues();
+            commentProps.setCurrentComment(editor);
+        },
 
-    const {
-        commentText,
-        allComments,
-        setCommentText,
-        setComment,
-        setCurrentComment,
-        findCommentsAndStoreValues,
-    } = useComment({editor, project})
+        onSelectionUpdate({ editor }) {
+            commentProps.setCurrentComment(editor);
+
+            commentProps.setIsTextSelected(!!editor.state.selection.content().size)
+        },
+
+        editorProps: {
+            attributes: {
+                spellcheck: 'false',
+            },
+        },
+    });
+
+    const commentProps = useComment({editor, project})
 
     return {
         editor,
-        commentText,
-        comments: allComments,
-        setCommentText,
-        setComment,
-        setCurrentComment,
+        ...commentProps,
     }
 }

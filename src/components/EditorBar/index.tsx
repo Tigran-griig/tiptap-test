@@ -11,6 +11,7 @@ import defaultClasses from "./tabBar.module.scss";
 interface EditorBarProps {
     editor: Editor | null;
     classes?: React.CSSProperties | undefined | null,
+    toggleCommentMode?:() => void
 }
 
 const EditorBar = (props: EditorBarProps) => {
@@ -25,7 +26,7 @@ const EditorBar = (props: EditorBarProps) => {
             <CustomIconGroup editor={editor}/>
             <CustomListGroup editor={editor}/>
             <HeadingGroup editor={editor}/>
-            <CustomSymbolGroup editor={editor}/>
+            <CustomSymbolGroup {...props} editor={editor}/>
         </div>
     )
 }
