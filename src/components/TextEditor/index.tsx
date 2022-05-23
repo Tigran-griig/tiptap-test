@@ -7,7 +7,7 @@ import {Block} from '@/Block';
 import {CustomFloatingMenu} from "@/components/EditorBar/CustomFloatingMenu";
 
 const TextEditor = () => {
-    const {editor,setCommentText,setComment,commentText,setCurrentComment} = useTextEditor()
+    const {editor,setCommentText,setComment,commentText,setCurrentComment,} = useTextEditor()
 
     return (
         <Block className={"editor-container"}>
