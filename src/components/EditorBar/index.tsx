@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Editor} from "@tiptap/react";
 import {mergeObjects} from "@/helpers";
 import {HeadingGroup} from "@/components/EditorBar/HeadingGroup";
@@ -7,6 +7,7 @@ import {CustomListGroup} from "@/components/EditorBar/CustomListGroup";
 import {CustomIconGroup} from "@/components/EditorBar/CustomIconGroup";
 
 import defaultClasses from "./tabBar.module.scss";
+import {FootnoteView} from "@/components/Footnote/Footnote";
 
 interface EditorBarProps {
     editor: Editor | null;
@@ -23,13 +24,16 @@ const EditorBar = (props: EditorBarProps) => {
     }
 
     return (
-        <div className={classes.root}>
-            <CustomIconGroup editor={editor}/>
-            <CustomListGroup editor={editor}/>
-            <HeadingGroup editor={editor}/>
-            <CustomSymbolGroup editor={editor}/>
-        </div>
-
+        <Fragment>
+            <div className={classes.root}>
+                <CustomIconGroup editor={editor}/>
+                <CustomListGroup editor={editor}/>
+                <HeadingGroup editor={editor}/>
+                <CustomSymbolGroup editor={editor}/>
+            </div>
+            {/*<FloatingMenuenu editor={editor}/>*/}
+            <FootnoteView/>
+        </Fragment>
     )
 }
 

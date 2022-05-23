@@ -9,6 +9,7 @@ export const CustomListGroup = ({editor}: { editor: Editor | null }) => {
     if (!editor) {
         return null;
     }
+
     return (
         <div className={classes.block}>
             <MobileFriendlyRoundedIcon className={classNames(classes.icon)}/>
@@ -19,3 +20,4 @@ export const CustomListGroup = ({editor}: { editor: Editor | null }) => {
         </div>
     );
 };
+

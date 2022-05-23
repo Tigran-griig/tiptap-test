@@ -1,10 +1,25 @@
 import React from 'react';
 import {classNames} from "@/helpers";
 import {Editor} from "@tiptap/core";
+
+
 import classes from "./tabBar.module.scss"
 
-export const HeadingGroup = ({editor}: { editor: Editor | null }) => {
+declare module '@tiptap/core' {
+    interface Commands<ReturnType> {
+        customExtension: {
+            /**
+             * Comments will be added to the autocomplete.
+             */
+            yourCommand: (someProp: any) => ReturnType,
+        }
+    }
+}
 
+
+
+export const HeadingGroup = ({editor}: { editor: Editor | null }) => {
+    // const {} = useCreateExtension();
     if (!editor) {
         return null;
     }
@@ -67,3 +82,6 @@ export const HeadingGroup = ({editor}: { editor: Editor | null }) => {
         </div>
     );
 };
+
+
+
