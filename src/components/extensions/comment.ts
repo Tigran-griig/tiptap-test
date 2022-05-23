@@ -53,6 +53,7 @@ export const Comment = Mark.create<CommentOptions>({
     },
 
     renderHTML({ HTMLAttributes }) {
+      console.log(this.options.HTMLAttributes,"options.HTMLAttributes")
         return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
     },
 

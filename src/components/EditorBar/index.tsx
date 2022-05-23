@@ -1,40 +1,35 @@
-import React, {Fragment} from 'react';
-import {Editor} from "@tiptap/react";
-import {mergeObjects} from "@/helpers";
-import {HeadingGroup} from "@/components/EditorBar/HeadingGroup";
-import {CustomSymbolGroup} from "@/components/EditorBar/CustomSymbolGroup";
-import {CustomListGroup} from "@/components/EditorBar/CustomListGroup";
-import {CustomIconGroup} from "@/components/EditorBar/CustomIconGroup";
+import React, { Fragment } from 'react';
+import { Editor } from "@tiptap/react";
+import { mergeObjects } from "@/helpers";
+import { HeadingGroup } from "@/components/EditorBar/HeadingGroup";
+import { CustomSymbolGroup } from "@/components/EditorBar/CustomSymbolGroup";
+import { CustomListGroup } from "@/components/EditorBar/CustomListGroup";
+import { CustomIconGroup } from "@/components/EditorBar/CustomIconGroup";
 
 import defaultClasses from "./tabBar.module.scss";
-import {FootnoteView} from "@/components/Footnote/Footnote";
 
 interface EditorBarProps {
-    editor: Editor | null;
-    classes?: React.CSSProperties | undefined | null,
+  editor: Editor | null;
+  classes?: React.CSSProperties | undefined | null,
 }
 
-
 const EditorBar = (props: EditorBarProps) => {
-    const {editor} = props;
-    const classes = mergeObjects(defaultClasses, props.classes);
+  const { editor } = props;
+  const classes = mergeObjects(defaultClasses, props.classes);
 
-    if (!editor) {
-        return null;
-    }
+  if (!editor) {
+    return null;
+  }
 
-    return (
-        <Fragment>
-            <div className={classes.root}>
-                <CustomIconGroup editor={editor}/>
-                <CustomListGroup editor={editor}/>
-                <HeadingGroup editor={editor}/>
-                <CustomSymbolGroup editor={editor}/>
-            </div>
-            {/*<FloatingMenuenu editor={editor}/>*/}
-            <FootnoteView/>
-        </Fragment>
-    )
+  return (
+      <div className={classes.root}>
+        <CustomIconGroup editor={editor}/>
+        <CustomListGroup editor={editor}/>
+        <HeadingGroup editor={editor}/>
+        <CustomSymbolGroup editor={editor}/>
+      </div>
+  )
 }
 
 export default EditorBar;
+
