@@ -4,8 +4,8 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react'
-import './mentionList.module.scss'
-import classes from "./mentionList.module.scss"
+import './mentionList.scss'
+
 export const MentionList = forwardRef((props:any, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
@@ -57,18 +57,18 @@ export const MentionList = forwardRef((props:any, ref) => {
   }))
 //@ts-ignore
   return (
-    <div className={classes.items}>
+    <div className={"items"}>
       {props?.items.length
         ? props.items.map((item:any, index:any) => (
           <button
-            className={`${classes.item} ${index === selectedIndex ? classes.isSelected : ''}`}
+            className={`item ${index === selectedIndex ? "isSelected" : ''}`}
             key={index}
             onClick={() => selectItem(index)}
           >
             {item}
           </button>
         ))
-        : <div className="item">No result</div>
+        : <div className={"item"}>No result</div>
       }
     </div>
   )

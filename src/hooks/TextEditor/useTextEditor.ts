@@ -1,4 +1,4 @@
-import { useEditor} from '@tiptap/react'
+import {useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from '@tiptap/extension-placeholder'
 import {Text} from '@tiptap/extension-text'
@@ -14,13 +14,33 @@ import {Comment} from '@/components/extensions/comment'
 import {useComment} from "../Comment/useComment"
 import {useEditorState} from "@/Providers/Editor";
 import {HardBreak} from "@tiptap/extension-hard-break";
+import {Mention} from "@tiptap/extension-mention";
+import suggestion from '@/components/suggestion'
+
+import { Extension } from '@tiptap/core'
+import {useUserState} from "@/Providers/User";
+
+
 
 export const useTextEditor = () => {
     const {project} = useEditorState();
+    const {user} = useUserState()
+    const CustomExtension = Extension.create({
+        name: 'customExtension',
+
+        addStorage() {
+            return {
+                citations: user?.citations,
+            }
+        },
+
+    })
 
     const editor = useEditor({
         extensions: [
+            CustomExtension,
             Document,
+            Comment,
             StarterKit,
             Text,
             TextStyle,
@@ -30,17 +50,11 @@ export const useTextEditor = () => {
             OrderedList,
             Underline,
             HardBreak,
-            Comment,
-            // Mention.configure({
-            //     HTMLAttributes: {
-            //         class: 'mention',
-            //     },
-            //     suggestion,
-            // }),
             StarterKit.configure({
                 // The Collaboration extension comes with its own history handling
                 history: false,
             }),
+
             OrderedList.configure({
                 itemTypeName: 'listItem',
             }),
@@ -49,6 +63,15 @@ export const useTextEditor = () => {
             }),
             Placeholder.configure({
                 placeholder: 'New story',
+            }),
+            Mention.configure({
+                HTMLAttributes: {
+                    class: 'mention',
+                    props:{
+                        citations:["Vazgen"]
+                    }
+                },
+                suggestion,
             }),
         ],
         content: `
@@ -86,9 +109,8 @@ export const useTextEditor = () => {
             commentProps.setCurrentComment(editor);
         },
 
-        onSelectionUpdate({ editor }) {
+        onSelectionUpdate({editor}) {
             commentProps.setCurrentComment(editor);
-
             commentProps.setIsTextSelected(!!editor.state.selection.content().size)
         },
 

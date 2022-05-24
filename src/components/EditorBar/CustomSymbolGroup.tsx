@@ -20,6 +20,7 @@ export const CustomSymbolGroup = (props: { editor: Editor | null;toggleCommentMo
             <button
                 type="button"
                 onClick={props?.toggleCommentMode}
+                className={classNames(classes.icon)}
             >
                 <span>ab1</span>
             </button>
@@ -45,6 +46,7 @@ export const CustomSymbolGroup = (props: { editor: Editor | null;toggleCommentMo
                                  className={classNames(classes.icon)}/>
             <UndoIcon onClick={() => editor.chain().focus().undo().run()} className={classNames(classes.icon)}/>
             <RedoIcon onClick={() => editor.chain().focus().redo().run()} className={classNames(classes.icon)}/>
+            <button onClick={() => {}}>Add citation</button>
         </div>
     );
 };

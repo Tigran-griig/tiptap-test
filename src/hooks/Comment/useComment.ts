@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import format from "date-fns/format";
 import {v4 as uuidv4} from "uuid";
 import {Editor} from "@tiptap/core";
 import {IProject} from "@/types/interfaces/IProject";
+import {BubbleMenu} from "@tiptap/extension-bubble-menu";
 
 const dateTimeFormat = 'dd.MM.yyyy HH:mm';
 
@@ -12,7 +13,7 @@ export interface CommentInstance {
 }
 
 export const useComment = ({editor, project}: { editor: Editor | null, project: IProject | null }) => {
-    const [isCommentModeOn, setIsCommentModeOn] = React.useState(false)
+    const [isCommentModeOn, setIsCommentModeOn] = React.useState<boolean>(false)
 
 
     const [commentText, setCommentText] = React.useState('');
@@ -66,7 +67,7 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
     const setCurrentComment = (editor: any) => {
         const newVal = editor.isActive('comment');
-        console.log(newVal,"newVal")
+        console.log(newVal, "newVal")
         if (newVal) {
             setTimeout(() => setShowCommentMenu(newVal), 50);
 
@@ -82,6 +83,10 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
         }
     };
 
+    useEffect(() => {
+        console.log(showAddCommentSection,"adddshopwsxzcocomnmnmtio")
+    },[showAddCommentSection])
+
     const setComment = () => {
         if (!commentText.trim().length) return;
 
@@ -89,7 +94,7 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
         const commentsArray = typeof activeCommentInstance.comments === 'string' ? JSON.parse(activeCommentInstance.comments) : activeCommentInstance.comments;
         if (commentsArray) {
-            let commentPositionNumber = commentsArray?.length + 1
+            let commentPositionNumber = commentsArray?.length ? commentsArray.length + 1 : 1
             const commentData = {
                 userName: project?.projectName,
                 projectId: project?.id ?? "anonymous_" + uuidv4(),
@@ -107,6 +112,7 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
             // eslint-disable-next-line no-unused-expressions
             editor?.chain().setComment(commentWithUuid).run();
+            toggleCommentMode()
         } else {
             const commentData = {
                 userName: project?.projectName,
@@ -114,7 +120,7 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
                 projectName: project?.projectName ?? "anonymous",
                 time: Date.now(),
                 content: commentText,
-                positionNumber: 1,
+                positionNumber: commentsArray?.length ? commentsArray?.length + 1 : 1,
             }
             const commentWithUuid = JSON.stringify({
                 uuid: uuidv4(),
@@ -123,26 +129,18 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
             // eslint-disable-next-line no-unused-expressions
             editor?.chain().setComment(commentWithUuid).run();
+            toggleCommentMode()
         }
-        // setIsCommentModeOn(false)
-        console.log(isCommentModeOn, "isComment")
-        toggleCommentMode()
         setTimeout(() => setCommentText(''), 50);
     };
 
     const toggleCommentMode = () => {
-        if(editor){
-        editor?.chain()?.focus().run();
-
+        setIsCommentModeOn(!isCommentModeOn)
         if (isCommentModeOn) {
             editor?.setEditable(false);
-            setIsCommentModeOn(false)
         } else {
             editor?.setEditable(true);
-            setIsCommentModeOn(true)
-        }
-        }else{
-            setIsCommentModeOn(false)
+                editor?.chain().focus().toggleComment().run()
         }
     };
 
@@ -158,7 +156,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
         setShowCommentMenu,
         toggleCommentMode,
         isCommentModeOn,
-        setIsCommentModeOn,
         allComments,
         setIsTextSelected,
         isTextSelected,

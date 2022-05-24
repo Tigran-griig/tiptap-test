@@ -224,19 +224,30 @@
 
 span[data-comment] {
   position: relative;
-  background: #35B996;
+  user-select: all;
 
   &::after {
-    position: absolute;
-    right: -5px;
-    top: -5px;
-    font-size: 12px;
-    cursor: pointer;
-    user-select: all;
+    position: relative;
+    z-index: 10;
+    right: 3px;
+    padding: 5px;
   }
 }
 
 
-span[data-count]::after{
+span[data-count]:last-child::after{
   content: attr(data-count);
+  border-radius: 49%;
+  top: -7px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.mention {
+  padding: 0.1rem 0.3rem;
+  box-decoration-break: clone;
+}
+
+.active-comment{
+  background: #35B996;
 }

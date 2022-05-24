@@ -5,7 +5,7 @@ export const CommentForm = ({
                                 setCommentText,
                                 setComment
                             }: { commentText: string, setCommentText: Dispatch<SetStateAction<any>>, setComment: any }) => {
-console.log(commentText,"commentText")
+
     return (
         <section className="comment-adder-section bg-white shadow-lg">
                 <textarea
