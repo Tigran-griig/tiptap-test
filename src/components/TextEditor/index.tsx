@@ -7,13 +7,13 @@ import {Block} from '@/Block';
 import {CustomFloatingMenu} from "@/components/EditorBar/CustomFloatingMenu";
 
 const TextEditor = () => {
-    const {editor,setCommentText,setComment,commentText,setCurrentComment,} = useTextEditor()
+    const {editor,setCommentText,setComment,toggleCommentMode,commentText,setCurrentComment,isTextSelected,isCommentModeOn,setIsCommentModeOn,setShowAddCommentSection,showCommentMenu,showAddCommentSection,activeCommentsInstance} = useTextEditor()
 
     return (
         <Block className={"editor-container"}>
-            <CustomFloatingMenu editor={editor} setCommentText={setCommentText} setComment={setComment} setCurrentComment={setCurrentComment} commentText={commentText}/>
+            <CustomFloatingMenu isTextSelected={isTextSelected}  isCommentModeOn={isCommentModeOn} editor={editor} showAddCommentSection={showAddCommentSection} setCommentText={setCommentText} activeCommentsInstance={activeCommentsInstance} setComment={setComment} setCurrentComment={setCurrentComment} commentText={commentText}/>
             <Block className={"tabBar"}>
-                <EditorBar editor={editor}/>
+                <EditorBar setIsCommentModeOn={toggleCommentMode} editor={editor}/>
             </Block>
             <Block className={"textEditor"}>
                 <EditorContent editor={editor}/>

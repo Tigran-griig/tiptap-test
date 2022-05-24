@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import format from "date-fns/format";
 import { v4 as uuidv4 } from "uuid";
 import { Editor } from "@tiptap/core";
 import { IProject } from "@/types/interfaces/IProject";
+import { IComment } from "@/types/interfaces/IComment";
 
 const dateTimeFormat = 'dd.MM.yyyy HH:mm';
 
 interface CommentInstance {
   uuid?: string
-  comments?: any[]
+  comments?: IComment[]
 }
 
 export const useComment = ({ editor, project }: { editor: Editor | null, project: IProject | null }) => {
@@ -24,7 +25,6 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
 
   const formatDate = (d: any) => (d ? format(new Date(d), dateTimeFormat) : null);
   const [activeCommentsInstance, setActiveCommentsInstance] = React.useState<CommentInstance>({});
-  console.log(commentText, "commentTe3xt", activeCommentsInstance, ":::::::::")
   const [allComments, setAllComments] = React.useState<any[]>([]);
   React.useEffect((): any => {
     setTimeout(findCommentsAndStoreValues, 100)
@@ -112,12 +112,17 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
     setTimeout(() => setCommentText(''), 50);
   };
 
+
   const toggleCommentMode = () => {
     setIsCommentModeOn(!isCommentModeOn)
-
-    if (isCommentModeOn) editor?.setEditable(false);
-    else editor?.setEditable(true);
+    if (isCommentModeOn) {
+      editor?.setEditable(false);
+    } else {
+      editor?.setEditable(true);
+      editor?.chain().focus().run()
+    }
   };
+
 
   return {
     setCommentText,
@@ -126,10 +131,16 @@ export const useComment = ({ editor, project }: { editor: Editor | null, project
     setCurrentComment,
     findCommentsAndStoreValues,
     showAddCommentSection,
+    isCommentModeOn,
+    setIsCommentModeOn,
+    isTextSelected,
     setShowAddCommentSection,
     showCommentMenu,
     setShowCommentMenu,
+    activeCommentsInstance,
     toggleCommentMode,
+    setIsTextSelected,
+    allComments,
   };
 };
 

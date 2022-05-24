@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { Editor, FloatingMenu, BubbleMenu } from '@tiptap/react';
-import { useComment } from '@/hooks/Comment/useComment';
+import { Editor, BubbleMenu } from '@tiptap/react';
 
 export const CustomFloatingMenu = (props: {
   editor: Editor | null;
@@ -8,17 +7,32 @@ export const CustomFloatingMenu = (props: {
   setCommentText: any;
   setComment: any;
   commentText: any;
+  isTextSelected: boolean;
   setCurrentComment: any;
+  isCommentModeOn: boolean;
+  activeCommentsInstance: any;
+  showAddCommentSection: boolean
 }) => {
-  const { editor, commentText, setCommentText, setComment, setCurrentComment } = props;
-
+  const {
+    editor,
+    commentText,
+    setCommentText,
+    setComment,
+    setCurrentComment,
+    isCommentModeOn,
+    isTextSelected,
+    activeCommentsInstance,
+  } = props;
   if (!editor) {
     return null
   }
 
   return (
     <Fragment>
-      <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
+      <BubbleMenu className="bubble-menu"
+                  tippyOptions={{ duration: 100 ,
+                    showOnCreate:!(!isCommentModeOn && !isTextSelected && !activeCommentsInstance.uuid)
+      }} editor={editor}>
         <section className="comment-adder-section bg-white shadow-lg">
             <textarea
               value={commentText}
@@ -52,26 +66,6 @@ export const CustomFloatingMenu = (props: {
           </section>
         </section>
       </BubbleMenu>
-      <FloatingMenu className="floating-menu" tippyOptions={{ duration: 100 }} editor={editor}>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
-        >
-          H1
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
-        >
-          H2
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'is-active' : ''}
-        >
-          Bullet List
-        </button>
-      </FloatingMenu>
     </Fragment>
   );
 };

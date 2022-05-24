@@ -2,103 +2,121 @@
   min-height: 250px;
   width: 100%;
   height: 100%;
+
   > * + * {
     margin-top: 0.75em;
   }
-  > h1{
+
+  > h1 {
     font-size: 2em;
     text-align: end;
     text-transform: uppercase;
     counter-reset: h2counter;
   }
-  > h2{
+
+  > h2 {
     font-size: 1.5em;
     margin-left: 2rem;
     position: relative;
     counter-reset: h3counter;
-    ::before{
-      content: counter(h2counter,upper-roman);
+
+    ::before {
+      content: counter(h2counter, upper-roman);
       counter-increment: h2counter;
       position: absolute;
       left: -2rem;
     }
   }
-  > h3{
+
+  > h3 {
     font-size: 1.17em;
     margin-left: 4rem;
     position: relative;
     counter-reset: h4counter;
-    ::before{
-      content: counter(h3counter,upper-alpha);
+
+    ::before {
+      content: counter(h3counter, upper-alpha);
       counter-increment: h3counter;
       position: absolute;
       left: -4rem;
     }
   }
-  > h4{
+
+  > h4 {
     font-size: 1em;
     margin-left: 6rem;
     position: relative;
     counter-reset: h5counter;
-    ::before{
-      content: counter(h4counter,decimal);
+
+    ::before {
+      content: counter(h4counter, decimal);
       counter-increment: h4counter;
       position: absolute;
       left: -6rem;
     }
   }
-  > h5{
+
+  > h5 {
     font-size: .83em;
     margin-left: 8rem;
     position: relative;
     counter-reset: h6counter;
-    ::before{
-      content: counter(h5counter,lower-alpha);
+
+    ::before {
+      content: counter(h5counter, lower-alpha);
       counter-increment: h5counter;
       position: absolute;
       left: -8rem;
     }
   }
-  > h6{
+
+  > h6 {
     font-size: .67em;
     margin-left: 10rem;
     position: relative;
     counter-reset: h7counter;
-    ::before{
-      content: counter(h6counter,decimal);
+
+    ::before {
+      content: counter(h6counter, decimal);
       counter-increment: h6counter;
       position: absolute;
       left: -10rem;
     }
   }
-  > .h7{
+
+  > .h7 {
     font-size: .67em;
     margin-left: 12rem;
     position: relative;
     counter-reset: h8counter;
-    ::before{
-      content: counter(h7counter,lower-alpha);
+
+    ::before {
+      content: counter(h7counter, lower-alpha);
       counter-increment: h7counter;
       position: absolute;
       left: -12rem;
     }
   }
-  > .h8{
+
+  > .h8 {
     font-size: .60em;
     margin-left: 14rem;
     position: relative;
     counter-reset: h9counter;
-    ::before{
-      content: counter(h8counter,lower-roman);
+
+    ::before {
+      content: counter(h8counter, lower-roman);
       counter-increment: h8counter;
       position: absolute;
       left: -14rem;
     }
   }
+
   blockquote {
     border-left: 3px solid rgba(#0d0d0d, 0.1);
     padding-left: 1rem;
   }
+
   ::selection {
     background: #D1FAE5;
   }
@@ -106,7 +124,7 @@
   a {
     color: #232323;
     font-weight: bold;
-    text-decoration: underline  #35B996 2px;
+    text-decoration: underline #35B996 2px;
     font-size: 19px;
     line-height: 28px;
   }
@@ -124,6 +142,7 @@
 .ProseMirror:focus {
   outline: none;
 }
+
 .ProseMirror p.is-editor-empty:first-child::before {
   font-size: 28px;
   font-weight: 700;
@@ -131,6 +150,7 @@
   content: attr(data-placeholder);
   font-family: PC sans, sans-serif;
 }
+
 /* Basic editor styles */
 .ProseMirror {
   > * + * {
@@ -174,27 +194,25 @@
   white-space: nowrap;
 }
 
-.editor-container{
+.editor-container {
   display: flex;
   flex-direction: column;
   height: 100% !important;
 }
 
-.tabBar{
+.tabBar {
   max-height: max-content;
   border: 1px solid gray;
   margin-bottom: 5px;
   padding: 5px;
 }
 
-.textEditor{
+.textEditor {
   height: 100% !important;
   max-height: 100%;
   border: 1px solid gray;
   padding: 5px;
 }
-
-
 
 /* MY styles */
 .editor-content {
@@ -216,6 +234,7 @@
         display: flex;
         flex-direction: column;
         margin: 0 0 8px 0;
+
         .date-time {
           font-size: 0.7em;
         }
@@ -257,20 +276,19 @@
       outline: none !important;
     }
 
-    span[data-comment] {
+    span[data-content] {
+      position: relative;
+
       background: rgba(172, 255, 47, 0.5);
 
-      &::after {
-        content: " 💬";
-        user-select: all;
-      }
+    }
+
+      [data-index] {
+        &::after {
+          content:attr(data-index);
+          user-select: all;
+        }
     }
   }
 }
 
-[data-comment]{
-  background: red;
-  ::after{
-    content: "1";
-  }
-}

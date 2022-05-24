@@ -2,88 +2,92 @@ import { getMarkRange, Mark, mergeAttributes } from '@tiptap/react';
 import { Plugin, TextSelection } from 'prosemirror-state';
 
 export interface CommentOptions {
-    HTMLAttributes: Record<string, any>,
+  HTMLAttributes: Record<string, any>,
 }
 
 declare module '@tiptap/core' {
-    interface Commands<ReturnType> {
-        comment: {
-            /**
-             * Set a comment mark
-             */
-            setComment: (comment: string) => ReturnType,
-            /**
-             * Toggle a comment mark
-             */
-            toggleComment: () => ReturnType,
-            /**
-             * Unset a comment mark
-             */
-            unsetComment: () => ReturnType,
-        }
+  interface Commands<ReturnType> {
+    comment: {
+      /**
+       * Set a comment mark
+       */
+      setComment: (comment: string) => ReturnType,
+      /**
+       * Toggle a comment mark
+       */
+      toggleComment: () => ReturnType,
+      /**
+       * Unset a comment mark
+       */
+      unsetComment: () => ReturnType,
     }
+  }
 }
 
 export const Comment = Mark.create<CommentOptions>({
-    name: 'comment',
+  name: 'comment',
 
-    addOptions() {
-        return {
-            HTMLAttributes: {},
-        };
-    },
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    };
+  },
 
-    addAttributes() {
-        return {
-            comment: {
-                default: null,
-                parseHTML: (el) => (el as HTMLSpanElement).getAttribute('data-comment'),
-                renderHTML: (attrs) => ({ 'data-comment': attrs.comment }),
-            },
-        };
-    },
+  addAttributes() {
+    return {
+      comment: {
+        default: null,
+        parseHTML: (el) => (el as HTMLSpanElement).getAttribute('data-comment'),
+        renderHTML: (attrs) => ({ 'data-comment': attrs.comment }),
+      },
+    };
+  },
 
-    parseHTML() {
-        return [
-            {
-                tag: 'span[data-comment]',
-                getAttrs: (el) => !!(el as HTMLSpanElement).getAttribute('data-comment')?.trim() && null,
-            },
-        ];
-    },
+  parseHTML() {
+    return [
+      {
+        tag: 'span[data-comment]',
+        getAttrs: (el) => !!(el as HTMLSpanElement).getAttribute('data-comment')?.trim() && null,
+      },
+    ];
+  },
 
-    renderHTML({ HTMLAttributes }) {
-      console.log(this.options.HTMLAttributes,"options.HTMLAttributes")
-        return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
-    },
+  renderHTML({ HTMLAttributes }) {
+    const proseMirror = document.querySelector('.ProseMirror');
 
-    addCommands() {
-        return {
-            setComment: (comment: string) => ({ commands }) => commands.setMark('comment', { comment }),
-            toggleComment: () => ({ commands }) => commands.toggleMark('comment'),
-            unsetComment: () => ({ commands }) => commands.unsetMark('comment'),
-        };
-    },
+    const comments = proseMirror?.querySelectorAll('span[data-comment]');
+    console.log(this.options.HTMLAttributes, "options.HTMLAttributes")
+    const index = comments?.length ? comments.length + 1 : 1;
+    return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, { "data-index": index }), 0];
+  },
 
-    addProseMirrorPlugins() {
-        return [
-            new Plugin({
-                props: {
-                    handleClick(view, pos) {
-                        const { schema, doc, tr } = view.state;
+  addCommands() {
+    return {
+      setComment: (comment: string) => ({ commands }) => commands.setMark('comment', { comment }),
+      toggleComment: () => ({ commands }) => commands.toggleMark('comment'),
+      unsetComment: () => ({ commands }) => commands.unsetMark('comment'),
+    };
+  },
 
-                        const range = getMarkRange(doc.resolve(pos), schema.marks.comment);
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        props: {
+          handleClick(view, pos) {
+            const { schema, doc, tr } = view.state;
 
-                        if (!range) return false;
+            const range = getMarkRange(doc.resolve(pos), schema.marks.comment);
 
-                        const [$start, $end] = [doc.resolve(range.from), doc.resolve(range.to)];
+            if (!range) return false;
 
-                        view.dispatch(tr.setSelection(new TextSelection($start, $end)));
+            const [$start, $end] = [doc.resolve(range.from), doc.resolve(range.to)];
 
-                        return true;
-                    },
-                },
-            }),
-        ];
-    },
+            view.dispatch(tr.setSelection(new TextSelection($start, $end)));
+
+            return true;
+          },
+        },
+      }),
+    ];
+  },
 });

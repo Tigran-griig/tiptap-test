@@ -11,10 +11,11 @@ import defaultClasses from "./tabBar.module.scss";
 interface EditorBarProps {
   editor: Editor | null;
   classes?: React.CSSProperties | undefined | null,
+  setIsCommentModeOn:any
 }
 
 const EditorBar = (props: EditorBarProps) => {
-  const { editor } = props;
+  const { editor,setIsCommentModeOn } = props;
   const classes = mergeObjects(defaultClasses, props.classes);
 
   if (!editor) {
@@ -26,7 +27,7 @@ const EditorBar = (props: EditorBarProps) => {
         <CustomIconGroup editor={editor}/>
         <CustomListGroup editor={editor}/>
         <HeadingGroup editor={editor}/>
-        <CustomSymbolGroup editor={editor}/>
+        <CustomSymbolGroup setIsCommentModeOn={setIsCommentModeOn} editor={editor}/>
       </div>
   )
 }

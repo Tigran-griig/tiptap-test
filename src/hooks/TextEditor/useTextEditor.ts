@@ -16,7 +16,6 @@ import { useComment } from "../Comment/useComment"
 import suggestion from "@/components/suggestion";
 import { useEditorState } from "@/Providers/Editor";
 
-
 export const useTextEditor = () => {
   const { project } = useEditorState();
 
@@ -83,8 +82,13 @@ export const useTextEditor = () => {
       </blockquote>
     `,
     onUpdate({ editor }) {
-      findCommentsAndStoreValues();
-      setCurrentComment(editor);
+      commentProps.findCommentsAndStoreValues();
+      commentProps.setCurrentComment(editor);
+    },
+    onSelectionUpdate({ editor }) {
+      commentProps.setCurrentComment(editor);
+
+      commentProps.setIsTextSelected(!!editor.state.selection.content().size)
     },
     editorProps: {
       attributes: {
@@ -93,20 +97,10 @@ export const useTextEditor = () => {
     },
   });
 
-  const {
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-    findCommentsAndStoreValues,
-  } = useComment({ editor, project} )
+  const commentProps = useComment({ editor, project })
 
   return {
     editor,
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-
+    ...commentProps
   }
 }
