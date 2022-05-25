@@ -104,14 +104,8 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
                 });
 
                 // eslint-disable-next-line no-unused-expressions
-                console.log(commentsArray,":commentsArraycommentsArraycommentsArray")
-
-                console.log(commentWithUuid,"sadfdbaDAfesdgscommentsArraycommentsArraycommentsArray")
                 editor?.chain().setComment(commentWithUuid).run();
-           debugger
                 editor?.commands.insertContentAt(editor?.state.selection.to, `${allComments && allComments?.length ? `${allComments?.length + 1}` : 1}`)
-
-                // setSuperscript
             } else {
                 const commentData = {
                     userName: project?.projectName,
@@ -127,11 +121,8 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
                 });
 
                 // eslint-disable-next-line no-unused-expressions
-                console.log(commentsArray,":commentsArraycommentsArraycommentsArray")
-
                 editor?.chain().setComment(commentWithUuid).run();
                 editor?.commands.insertContentAt(editor?.state.selection.to, `${allComments && allComments?.length ? `${allComments?.length + 1}` : 1}`)
-debugger
             }
             enqueueSnackbar('This is a success message!', {variant: "success"});
             setTimeout(() => setCommentText(''), 50);
