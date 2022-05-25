@@ -1,135 +1,173 @@
 import React from 'react';
 import format from "date-fns/format";
-import { v4 as uuidv4 } from "uuid";
-import { Editor } from "@tiptap/core";
-import { IProject } from "@/types/interfaces/IProject";
+import {v4 as uuidv4} from "uuid";
+import {Editor} from "@tiptap/core";
+import {IProject} from "@/types/interfaces/IProject";
+import {useSnackbar} from 'notistack';
+import {mergeAttributes} from "@tiptap/react";
 
 const dateTimeFormat = 'dd.MM.yyyy HH:mm';
 
-interface CommentInstance {
-  uuid?: string
-  comments?: any[]
+export interface CommentInstance {
+    uuid?: string
+    comments?: any[]
 }
 
-export const useComment = ({ editor, project }: { editor: Editor | null, project: IProject | null }) => {
-  const [isCommentModeOn, setIsCommentModeOn] = React.useState<boolean>(false)
+export const useComment = ({editor, project}: { editor: Editor | null, project: IProject | null }) => {
+    const [isCommentModeOn, setIsCommentModeOn] = React.useState<boolean>(false)
+    const {enqueueSnackbar} = useSnackbar();
 
-  const [commentText, setCommentText] = React.useState<string>('');
+    const [commentText, setCommentText] = React.useState('');
 
-  const [showCommentMenu, setShowCommentMenu] = React.useState(false);
+    const [showCommentMenu, setShowCommentMenu] = React.useState(false);
 
-  const [isTextSelected, setIsTextSelected] = React.useState<boolean>(false);
+    const [isTextSelected, setIsTextSelected] = React.useState(false);
 
-  const [showAddCommentSection, setShowAddCommentSection] = React.useState(false);
+    const [showAddCommentSection, setShowAddCommentSection] = React.useState(true);
 
-  const formatDate = (d: any) => (d ? format(new Date(d), dateTimeFormat) : null);
-  const [activeCommentsInstance, setActiveCommentsInstance] = React.useState<CommentInstance>({});
-  console.log(commentText, "commentTe3xt", activeCommentsInstance, ":::::::::")
-  const [allComments, setAllComments] = React.useState<any[]>([]);
-  React.useEffect((): any => {
-    setTimeout(findCommentsAndStoreValues, 100)
-  }, []);
+    const formatDate = (d: any) => (d ? format(new Date(d), dateTimeFormat) : null);
 
-  const findCommentsAndStoreValues = () => {
-    const proseMirror = document.querySelector('.ProseMirror');
+    const [activeCommentsInstance, setActiveCommentsInstance] = React.useState<CommentInstance>({});
 
-    const comments = proseMirror?.querySelectorAll('span[data-comment]');
+    const [allComments, setAllComments] = React.useState<any[]>([]);
 
-    const tempComments: any[] = [];
 
-    if (!comments) {
-      setAllComments([])
-      return;
-    }
+    React.useEffect(((): any => {
+        setTimeout(findCommentsAndStoreValues, 100)
+    }), []);
 
-    comments.forEach((node) => {
-      const nodeComments = node.getAttribute('data-comment');
 
-      const jsonComments = nodeComments ? JSON.parse(nodeComments) : null;
+    const findCommentsAndStoreValues = () => {
+        const proseMirror = document.querySelector('.ProseMirror');
 
-      if (jsonComments !== null) {
-        tempComments.push({
-          node,
-          jsonComments,
+        const comments = proseMirror?.querySelectorAll('span[data-comment]');
+
+        const tempComments: any[] = [];
+
+        if (!comments) {
+            setAllComments([])
+            return;
+        }
+
+        comments.forEach((node, i) => {
+            const nodeComments = node.getAttribute('data-comment');
+            const jsonComments = nodeComments ? JSON.parse(nodeComments) : null;
+
+            if (jsonComments !== null) {
+                tempComments.push({
+                    ...node,
+                    jsonComments,
+                });
+            }
         });
-      }
-    });
 
-    setAllComments(tempComments)
-  };
-  const setCurrentComment = (editor: any) => {
-    const newVal = editor.isActive('comment');
+        setAllComments(tempComments)
+    };
 
-    if (newVal) {
-      setTimeout(() => setShowCommentMenu(newVal), 50);
+    const setCurrentComment = (editor: any) => {
+        const newVal = editor.isActive('comment');
+        if (newVal) {
+            setTimeout(() => setShowCommentMenu(newVal), 50);
 
-      setShowAddCommentSection(!editor.state.selection.empty)
+            setShowAddCommentSection(!editor.state.selection.empty)
 
-      const parsedComment = JSON.parse(editor.getAttributes('comment').comment);
+            const parsedComment = JSON.parse(editor.getAttributes('comment').comment);
 
-      parsedComment.comment = typeof parsedComment.comments === 'string' ? JSON.parse(parsedComment.comments) : parsedComment.comments;
+            parsedComment.comment = typeof parsedComment.comments === 'string' ? JSON.parse(parsedComment.comments) : parsedComment.comments;
 
-      setActiveCommentsInstance(parsedComment)
-    } else {
-      setActiveCommentsInstance({})
-    }
-  };
+            setActiveCommentsInstance(parsedComment)
+        } else {
+            setActiveCommentsInstance({})
+        }
+    };
 
-  const setComment = () => {
-    if (!commentText.trim().length) return;
+    const setComment = () => {
+        try {
+            if (!commentText.trim().length) return;
+            const activeCommentInstance: CommentInstance = JSON.parse(JSON.stringify(activeCommentsInstance));
+            const commentsArray = typeof activeCommentInstance.comments === 'string' ? JSON.parse(activeCommentInstance.comments) : activeCommentInstance.comments;
+            if (commentsArray) {
+                let commentPositionNumber = commentsArray?.length ? commentsArray.length + 1 : 1
+                const commentData = {
+                    userName: project?.projectName,
+                    projectId: project?.id ?? "anonymous_" + uuidv4(),
+                    projectName: project?.projectName ?? "anonymous",
+                    time: Date.now(),
+                    content: commentText,
+                    positionNumber: commentPositionNumber
+                }
+                commentsArray.push(commentData);
 
-    const activeCommentInstance: CommentInstance = JSON.parse(JSON.stringify(activeCommentsInstance));
+                const commentWithUuid = JSON.stringify({
+                    uuid: activeCommentsInstance.uuid || uuidv4(),
+                    comments: commentsArray,
+                });
 
-    const commentsArray = typeof activeCommentInstance.comments === 'string' ? JSON.parse(activeCommentInstance.comments) : activeCommentInstance.comments;
+                // eslint-disable-next-line no-unused-expressions
+                console.log(commentsArray,":commentsArraycommentsArraycommentsArray")
 
-    if (commentsArray) {
-      commentsArray.push({
-        projectId: project?.id ?? "anonymous",
-        projectName: project?.projectName ?? "anonymous",
-        time: Date.now(),
-        content: commentText,
-      });
+                console.log(commentWithUuid,"sadfdbaDAfesdgscommentsArraycommentsArraycommentsArray")
+                editor?.chain().setComment(commentWithUuid).run();
+           debugger
+                editor?.commands.insertContentAt(editor?.state.selection.to, `${allComments && allComments?.length ? `${allComments?.length + 1}` : 1}`)
 
-      const commentWithUuid = JSON.stringify({
-        uuid: activeCommentsInstance.uuid || uuidv4(),
-        comments: commentsArray,
-      });
-      editor?.chain().setTextSelection(6).run()
-      editor?.chain().setComment(commentWithUuid).run();
-    } else {
-      const commentWithUuid = JSON.stringify({
-        id: uuidv4(),
-        comments: [{
-          projectId: project?.id ?? "anonymous",
-          projectName: project?.projectName ?? "anonymous",
-          time: Date.now(),
-          content: commentText,
-        }],
-      });
-      editor?.chain().setComment(commentWithUuid).run();
-    }
+                // setSuperscript
+            } else {
+                const commentData = {
+                    userName: project?.projectName,
+                    projectId: project?.id ?? "anonymous_" + uuidv4(),
+                    projectName: project?.projectName ?? "anonymous",
+                    time: Date.now(),
+                    content: commentText,
+                    positionNumber: commentsArray?.length ? commentsArray?.length + 1 : 1,
+                }
+                const commentWithUuid = JSON.stringify({
+                    uuid: uuidv4(),
+                    comments: [commentData],
+                });
 
-    setTimeout(() => setCommentText(''), 50);
-  };
+                // eslint-disable-next-line no-unused-expressions
+                console.log(commentsArray,":commentsArraycommentsArraycommentsArray")
 
-  const toggleCommentMode = () => {
-    setIsCommentModeOn(!isCommentModeOn)
+                editor?.chain().setComment(commentWithUuid).run();
+                editor?.commands.insertContentAt(editor?.state.selection.to, `${allComments && allComments?.length ? `${allComments?.length + 1}` : 1}`)
+debugger
+            }
+            enqueueSnackbar('This is a success message!', {variant: "success"});
+            setTimeout(() => setCommentText(''), 50);
+        } catch (err) {
+            enqueueSnackbar('error!', {variant: "error"});
+        }
+    };
 
-    if (isCommentModeOn) editor?.setEditable(false);
-    else editor?.setEditable(true);
-  };
+    const toggleCommentMode = () => {
+        setIsCommentModeOn(!isCommentModeOn)
+        if (isCommentModeOn) {
+            editor?.setEditable(false);
+            editor?.chain().focus().toggleComment().run()
+        } else {
+            editor?.setEditable(true);
+            editor?.chain().focus().toggleComment().run()
+        }
+    };
 
-  return {
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-    findCommentsAndStoreValues,
-    showAddCommentSection,
-    setShowAddCommentSection,
-    showCommentMenu,
-    setShowCommentMenu,
-    toggleCommentMode,
-  };
+    return {
+        setCommentText,
+        commentText,
+        setComment,
+        setCurrentComment,
+        findCommentsAndStoreValues,
+        showAddCommentSection,
+        setShowAddCommentSection,
+        showCommentMenu,
+        setShowCommentMenu,
+        toggleCommentMode,
+        isCommentModeOn,
+        allComments,
+        setIsTextSelected,
+        isTextSelected,
+        activeCommentsInstance,
+        setIsCommentModeOn,
+    };
 };
 

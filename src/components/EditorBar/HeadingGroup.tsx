@@ -19,7 +19,6 @@ declare module '@tiptap/core' {
 
 
 export const HeadingGroup = ({editor}: { editor: Editor | null }) => {
-    // const {} = useCreateExtension();
     if (!editor) {
         return null;
     }

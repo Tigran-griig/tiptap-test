@@ -1,58 +1,83 @@
-import { useEditor } from '@tiptap/react'
+import {useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Placeholder } from '@tiptap/extension-placeholder'
-import { Text } from '@tiptap/extension-text'
-import { FontFamily } from '@tiptap/extension-font-family'
+import {Placeholder} from '@tiptap/extension-placeholder'
+import {Text} from '@tiptap/extension-text'
+import {FontFamily} from '@tiptap/extension-font-family'
 import TextStyle from '@tiptap/extension-text-style'
-import { Color } from '@tiptap/extension-color'
+import {Color} from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 import Blockquote from '@tiptap/extension-blockquote'
-import { OrderedList } from "@tiptap/extension-ordered-list";
-import { Underline } from "@tiptap/extension-underline";
-import { Document } from "@tiptap/extension-document";
-import { Mention } from '@tiptap/extension-mention'
-import { Comment } from '@/components/extensions/comment'
-import { useComment } from "../Comment/useComment"
-import suggestion from "@/components/suggestion";
-import { useEditorState } from "@/Providers/Editor";
+import {OrderedList} from "@tiptap/extension-ordered-list";
+import {Underline} from "@tiptap/extension-underline";
+import {Document} from "@tiptap/extension-document";
+import {Comment} from '@/components/extensions/comment'
+import {useComment} from "../Comment/useComment"
+import {useEditorState} from "@/Providers/Editor";
+import {HardBreak} from "@tiptap/extension-hard-break";
+import {Mention} from "@tiptap/extension-mention";
+import suggestion from '@/components/suggestion';
+import {BubbleMenu} from '@tiptap/extension-bubble-menu';
+import { Extension } from '@tiptap/core'
+import {useUserState} from "@/Providers/User";
+import {Superscript} from "@tiptap/extension-superscript";
 
 
 export const useTextEditor = () => {
-  const { project } = useEditorState();
+    const {project} = useEditorState();
+    const {user} = useUserState()
+    const CustomExtension = Extension.create({
+        name: 'customExtension',
 
-  const editor = useEditor({
-    extensions: [
-      Comment,
-      Document,
-      StarterKit,
-      Text,
-      TextStyle,
-      FontFamily,
-      Color,
-      Blockquote,
-      OrderedList,
-      Underline,
-      Mention.configure({
-        HTMLAttributes: {
-          class: 'mention',
+        addStorage() {
+            return {
+                citations: user?.citations,
+            }
         },
-        suggestion,
-      }),
-      StarterKit.configure({
-        // The Collaboration extension comes with its own history handling
-        history: false,
-      }),
-      OrderedList.configure({
-        itemTypeName: 'listItem',
-      }),
-      Link.configure({
-        openOnClick: false,
-      }),
-      Placeholder.configure({
-        placeholder: 'New story',
-      }),
-    ],
-    content: `
+
+    })
+
+    const editor = useEditor({
+        extensions: [
+            CustomExtension,
+            Document,
+            Comment,
+            StarterKit,
+            Text,
+            TextStyle,
+            FontFamily,
+            Color,
+            Blockquote,
+            OrderedList,
+            Underline,
+            BubbleMenu,
+            HardBreak,
+            Superscript,
+            StarterKit.configure({
+                // The Collaboration extension comes with its own history handling
+                history: false,
+            }),
+            Superscript.configure({
+                HTMLAttributes: {
+                    class: 'my-custom-class',
+                },
+            }),
+            OrderedList.configure({
+                itemTypeName: 'listItem',
+            }),
+            Link.configure({
+                openOnClick: false,
+            }),
+            Placeholder.configure({
+                placeholder: 'New story',
+            }),
+            Mention.configure({
+                HTMLAttributes: {
+                    class: 'mention',
+                },
+                suggestion,
+            }),
+        ],
+        content: `
       <h2>
         Hi there,
       </h2>
@@ -82,31 +107,27 @@ export const useTextEditor = () => {
         — Mom
       </blockquote>
     `,
-    onUpdate({ editor }) {
-      findCommentsAndStoreValues();
-      setCurrentComment(editor);
-    },
-    editorProps: {
-      attributes: {
-        spellcheck: 'false',
-      },
-    },
-  });
+        onUpdate({editor}) {
+            commentProps.findCommentsAndStoreValues();
+            commentProps.setCurrentComment(editor);
+        },
 
-  const {
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
-    findCommentsAndStoreValues,
-  } = useComment({ editor, project} )
+        onSelectionUpdate({editor}) {
+            commentProps.setCurrentComment(editor);
+            commentProps.setIsTextSelected(!!editor.state.selection.content().size)
+        },
 
-  return {
-    editor,
-    setCommentText,
-    commentText,
-    setComment,
-    setCurrentComment,
+        editorProps: {
+            attributes: {
+                spellcheck: 'false',
+            },
+        },
+    });
 
-  }
+    const commentProps = useComment({editor, project})
+
+    return {
+        editor,
+        ...commentProps,
+    }
 }

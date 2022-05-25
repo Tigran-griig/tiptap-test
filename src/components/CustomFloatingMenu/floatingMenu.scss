@@ -1,13 +1,11 @@
-
-:global(.bubble-menu){
-> h1{
-  margin: 0!important;
-  padding: 0!important;
+.custom-bubble-menu {
+  > h1 {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
-}
-
-:global(.bubble-menu) {
+.custom-bubble-menu {
   display: flex;
   background-color: #928e8e;
   padding: 4px;
@@ -48,4 +46,12 @@
       opacity: 1;
     }
   }
+}
+
+.custom-bubble-menu-hide {
+  visibility: hidden !important;
+}
+
+.custom-bubble-menu-show {
+  visibility: visible !important;
 }

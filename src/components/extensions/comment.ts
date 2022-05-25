@@ -38,7 +38,7 @@ export const Comment = Mark.create<CommentOptions>({
             comment: {
                 default: null,
                 parseHTML: (el) => (el as HTMLSpanElement).getAttribute('data-comment'),
-                renderHTML: (attrs) => ({ 'data-comment': attrs.comment }),
+                renderHTML: (attrs) => ({'data-comment': attrs.comment})
             },
         };
     },
@@ -53,15 +53,14 @@ export const Comment = Mark.create<CommentOptions>({
     },
 
     renderHTML({ HTMLAttributes }) {
-      console.log(this.options.HTMLAttributes,"options.HTMLAttributes")
         return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
     },
 
     addCommands() {
         return {
-            setComment: (comment: string) => ({ commands }) => commands.setMark('comment', { comment }),
-            toggleComment: () => ({ commands }) => commands.toggleMark('comment'),
-            unsetComment: () => ({ commands }) => commands.unsetMark('comment'),
+            setComment: (comment: string) => ({commands}) => commands.setMark('comment', {comment}),
+            toggleComment: () => ({commands}) => commands.toggleMark('comment'),
+            unsetComment: () => ({commands}) => commands.unsetMark('comment'),
         };
     },
 
@@ -70,14 +69,13 @@ export const Comment = Mark.create<CommentOptions>({
             new Plugin({
                 props: {
                     handleClick(view, pos) {
-                        const { schema, doc, tr } = view.state;
+                        const {schema, doc, tr} = view.state;
 
                         const range = getMarkRange(doc.resolve(pos), schema.marks.comment);
 
                         if (!range) return false;
 
                         const [$start, $end] = [doc.resolve(range.from), doc.resolve(range.to)];
-
                         view.dispatch(tr.setSelection(new TextSelection($start, $end)));
 
                         return true;
