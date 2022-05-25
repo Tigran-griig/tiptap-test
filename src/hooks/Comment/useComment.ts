@@ -48,8 +48,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
             return;
         }
 
-        console.log(comments, "comments")
-
         comments.forEach((node, i) => {
             const nodeComments = node.getAttribute('data-comment');
             const jsonComments = nodeComments ? JSON.parse(nodeComments) : null;
@@ -67,7 +65,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
     const setCurrentComment = (editor: any) => {
         const newVal = editor.isActive('comment');
-        console.log(newVal, "newVal")
         if (newVal) {
             setTimeout(() => setShowCommentMenu(newVal), 50);
 
@@ -82,10 +79,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
             setActiveCommentsInstance({})
         }
     };
-
-    useEffect(() => {
-        console.log(showAddCommentSection,"adddshopwsxzcocomnmnmtio")
-    },[showAddCommentSection])
 
     const setComment = () => {
         if (!commentText.trim().length) return;
@@ -112,7 +105,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
             // eslint-disable-next-line no-unused-expressions
             editor?.chain().setComment(commentWithUuid).run();
-            toggleCommentMode()
         } else {
             const commentData = {
                 userName: project?.projectName,
@@ -129,7 +121,6 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
 
             // eslint-disable-next-line no-unused-expressions
             editor?.chain().setComment(commentWithUuid).run();
-            toggleCommentMode()
         }
         setTimeout(() => setCommentText(''), 50);
     };
@@ -138,6 +129,7 @@ export const useComment = ({editor, project}: { editor: Editor | null, project: 
         setIsCommentModeOn(!isCommentModeOn)
         if (isCommentModeOn) {
             editor?.setEditable(false);
+            editor?.chain().focus().toggleComment().run()
         } else {
             editor?.setEditable(true);
                 editor?.chain().focus().toggleComment().run()

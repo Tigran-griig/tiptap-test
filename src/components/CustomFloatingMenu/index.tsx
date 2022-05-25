@@ -1,7 +1,8 @@
-import React, {Fragment, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {Fragment, MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {Editor, BubbleMenu, FloatingMenu} from '@tiptap/react';
 import {CommentForm} from "@/components/Comment/CommentForm";
 import {CommentInstance} from '@/hooks/Comment/useComment';
+import './floatingMenu.scss';
 
 export const CustomFloatingMenu = (props: {
     editor: Editor;
@@ -21,25 +22,21 @@ export const CustomFloatingMenu = (props: {
         commentText,
         setCommentText,
         setComment,
-        isCommentModeOn,
         toggleCommentMode,
+        isCommentModeOn,
         isTextSelected,
         activeCommentsInstance,
     } = props;
 
-    if (!editor) {
-        return null
-    }
-
     return (
         <Fragment>
             <BubbleMenu
-                className={`${!!(!isCommentModeOn && !isTextSelected && activeCommentsInstance.uuid ? "" : "bubble-menu")}`}
+                className={`custom-bubble-menu ${!(isCommentModeOn && isTextSelected && !activeCommentsInstance.uuid) ? "custom-bubble-menu-hide" : "custom-bubble-menu-show"}`}
                 editor={editor}
                 tippyOptions={{
                     duration: 100,
-                    hideOnClick: !!(isCommentModeOn && isTextSelected && !activeCommentsInstance.uuid) && editor.isEditable,
-                    showOnCreate: !!(isCommentModeOn && isTextSelected && !activeCommentsInstance.uuid) && editor.isEditable,
+                    interactive: true,
+                    hideOnClick: "toggle",
                 }}
             >
                 <CommentForm commentText={commentText} setCommentText={setCommentText} setComment={setComment}/>

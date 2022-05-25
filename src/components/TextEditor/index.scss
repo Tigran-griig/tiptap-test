@@ -229,13 +229,12 @@ span[data-comment] {
   &::after {
     position: relative;
     z-index: 10;
-    right: 3px;
     padding: 5px;
   }
 }
 
 
-span[data-count]:last-child::after{
+span[data-count]:after{
   content: attr(data-count);
   border-radius: 49%;
   top: -7px;

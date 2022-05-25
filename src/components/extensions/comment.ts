@@ -57,7 +57,7 @@ export const Comment = Mark.create<CommentOptions>({
 
         const comments = proseMirror?.querySelectorAll('span[data-comment]');
 
-        const index =   (comments && comments?.length ? comments?.length + 1 :JSON.parse(HTMLAttributes["data-comment"]).comments[JSON.parse(HTMLAttributes["data-comment"]).comments.length-1].positionNumber  ?? 1)
+        const index =   (comments && comments?.length ? comments.length + 1 : 1)
         return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {"data-count":index}), 0];
     },
 

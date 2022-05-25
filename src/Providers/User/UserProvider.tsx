@@ -42,6 +42,12 @@ export function UserProvider({children}: React.PropsWithChildren<UserProviderPro
     const updateCitations = useCallback((cit:ICitation[]) => {
     }, [user])
 
+    const updateProjects = useCallback((cit:ICitation[]) => {
+    }, [user])
+
+   const  updateUser = useCallback(() => {
+   },[])
+
     const providerValues: UserConsumerProps = {
         user,
         setUser,

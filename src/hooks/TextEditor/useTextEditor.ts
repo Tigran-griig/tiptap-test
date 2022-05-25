@@ -15,8 +15,8 @@ import {useComment} from "../Comment/useComment"
 import {useEditorState} from "@/Providers/Editor";
 import {HardBreak} from "@tiptap/extension-hard-break";
 import {Mention} from "@tiptap/extension-mention";
-import suggestion from '@/components/suggestion'
-
+import suggestion from '@/components/suggestion';
+import {BubbleMenu} from '@tiptap/extension-bubble-menu';
 import { Extension } from '@tiptap/core'
 import {useUserState} from "@/Providers/User";
 
@@ -49,6 +49,7 @@ export const useTextEditor = () => {
             Blockquote,
             OrderedList,
             Underline,
+            BubbleMenu,
             HardBreak,
             StarterKit.configure({
                 // The Collaboration extension comes with its own history handling
@@ -67,9 +68,6 @@ export const useTextEditor = () => {
             Mention.configure({
                 HTMLAttributes: {
                     class: 'mention',
-                    props:{
-                        citations:["Vazgen"]
-                    }
                 },
                 suggestion,
             }),

@@ -15,6 +15,7 @@ export const CustomSymbolGroup = (props: { editor: Editor | null;toggleCommentMo
         return editor?.commands.insertContent(symbol)
     }
 
+
     return (
         <div className={classes.block}>
             <button
