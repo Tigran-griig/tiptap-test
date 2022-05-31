@@ -4,13 +4,13 @@ export const CommentForm = ({
                                 commentText,
                                 setCommentText,
                                 setComment
-                            }: { commentText: string, setCommentText: Dispatch<SetStateAction<any>>, setComment: any }) => {
+                            }: { commentText: string, setCommentText: Dispatch<SetStateAction<string>>, setComment: any }) => {
 
     return (
         <section className="comment-adder-section bg-white shadow-lg">
                 <textarea
                     value={commentText}
-                    onChange={(e) => setCommentText((e.target as any)?.value)}
+                    onChange={(e) => setCommentText((e.target)?.value as string)}
                     onKeyDown={(e) => {
                         if (e.key === "enter") {
                             e.preventDefault()
@@ -29,7 +29,7 @@ export const CommentForm = ({
                     onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
-                        setCommentText('')
+                        setCommentText('' as string)
                     }}>
                     Clear
                 </button>

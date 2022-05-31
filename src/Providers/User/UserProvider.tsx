@@ -1,4 +1,4 @@
-import React, {SetStateAction, Dispatch, useCallback} from "react"
+import React, {SetStateAction, Dispatch} from "react"
 import createSafeContext from "@/lib/createSafeContext";
 import EditorProvider from "../Editor";
 import {_I_USER} from "@/types/interfaces/IUser";
@@ -8,7 +8,10 @@ export const [useContext, Provider] = createSafeContext<UserConsumerProps>();
 
 export interface UserConsumerProps {
     user: _I_USER;
-    setUser: Dispatch<SetStateAction<_I_USER>>
+    setUser: Dispatch<SetStateAction<_I_USER>>;
+    removeCitationById: (citationId: string) => void;
+    addCitation: (citation: ICitation) => void;
+    addCitationNameBySymbol: ({name,symbol}:{name:string,symbol:string}) => void;
 }
 
 export interface UserProviderProps {
@@ -38,19 +41,36 @@ export function UserProvider({children}: React.PropsWithChildren<UserProviderPro
 
     },)
 
+    const removeCitationById = (citationId: string) => {
+        setUser(prevState => {
+            return {...prevState, citations: [...prevState.citations?.filter(cit => cit?.id !== citationId)]}
+        })
+    }
 
-    const updateCitations = useCallback((cit:ICitation[]) => {
-    }, [user])
+    const addCitation = (citation: ICitation) => {
+        setUser(prevState => ({...prevState, citations: [...prevState?.citations, citation]}))
+    }
 
-    const updateProjects = useCallback((cit:ICitation[]) => {
-    }, [user])
-
-   const  updateUser = useCallback(() => {
-   },[])
+    const addCitationNameBySymbol = ({name,symbol}:{name: string, symbol: string}) => {
+        setUser(prevState => {
+            return {
+                ...prevState, citations: [...prevState.citations?.map(cit => {
+                    if (cit?.symbol === symbol) {
+                        cit.names.push(name)
+                        return cit
+                    }
+                    return cit
+                })]
+            }
+        })
+    }
 
     const providerValues: UserConsumerProps = {
         user,
         setUser,
+        removeCitationById,
+        addCitation,
+        addCitationNameBySymbol
     };
 
     return (
