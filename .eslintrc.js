@@ -39,7 +39,29 @@ module.exports = {
     'no-shadow': 'off', // This One is disabled because rule have no support for ts, but at the bottom we have enabled @typescript-eslint/no-shadow instead of
     '@typescript-eslint/no-shadow': 'error',
     'react/require-default-props': 0,
+    "import/no-extraneous-dependencies":"off",
+    'default-case': 1,
+    "import/prefer-default-export": "off",
     'filenames/match-exported': [1, 'camel'],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          // add a custom message to help explain why not to use it
+          "Foo": "Don't use Foo because it is unsafe",
+
+          // add a custom message, AND tell the plugin how to fix it
+          "OldAPI": {
+            "message": "Use NewAPI instead",
+            "fixWith": "NewAPI"
+          },
+
+          // un-ban a type that's banned by default
+          "{}": false
+        },
+        "extendDefaults": true
+      }
+    ],
     '@typescript-eslint/naming-convention': [
       'error',
       {

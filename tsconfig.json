@@ -15,7 +15,6 @@
     "isolatedModules": false,
     "noEmit": true,
     "jsx": "react",
-    "jsxFragmentFactory": "Fragment",
   },
   "include": ["src", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],

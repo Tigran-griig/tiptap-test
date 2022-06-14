@@ -16,10 +16,10 @@ interface CitationFormData extends FieldValues {
   shortName: string
   volume: string
   reporter: string
-  startPage:string
+  startPage: string
   pincite: string
   dateDecided: string
-  court:string
+  court: string
   parenthetical: string
 }
 
@@ -36,16 +36,20 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
       shortName: '',
       volume: '',
       reporter: '',
-      startPage:'',
+      startPage: '',
       pincite: '',
       dateDecided: '',
-      court:'',
+      court: '',
       parenthetical: '',
     },
   })
 
   const onSubmit = handleSubmit(async (formData: CitationFormData) => {
-    const citationText = `(${formData.name}, ${formData.volume}, ${formData.reporter}, ${formData.startPage} ${formData.pincite}, ${formData.dateDecided}, ${formData.court}, ${formData?.parenthetical ? `[${formData.parenthetical}]`:''})`
+    const citationText = `(${formData.name}, ${formData.volume}, ${formData.reporter}, ${
+      formData.startPage
+    } ${formData.pincite}, ${formData.dateDecided}, ${formData.court}, ${
+      formData?.parenthetical ? `[${formData.parenthetical}]` : ''
+    })`
     const userCitation: {citation: string; symbol: string} = {
       citation: String(citationText),
       symbol: formData.symbol,
@@ -67,7 +71,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.symbol && <p>{errors.symbol?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Case name"
           type="text"
           id="name"
@@ -85,7 +90,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.shortName && <p>{errors.shortName?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Volume"
           type="text"
           id="volume"
@@ -94,7 +100,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.volume && <p>{errors.volume?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Reporter"
           type="text"
           id="reporter"
@@ -103,7 +110,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.reporter && <p>{errors.reporter?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Start page"
           type="text"
           id="startPage"
@@ -112,7 +120,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.startPage && <p>{errors.startPage?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Pincite"
           type="text"
           id="pincite"
@@ -121,7 +130,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.pincite && <p>{errors.pincite?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Date decided"
           type="text"
           id="dateDecided"
@@ -130,7 +140,8 @@ const CitationForm = ({existCitationData, closeModal}: CitationFormProps) => {
         {!!errors?.dateDecided && <p>{errors.dateDecided?.message}</p>}
       </div>
       <div className={classes.field}>
-        *<input
+        *
+        <input
           placeholder="Court"
           type="text"
           id="court"

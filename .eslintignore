@@ -7,3 +7,5 @@ commands.js
 ga.js
 src/index.tsx
 src/App.test.tsx
+src
+craco.config.ts
