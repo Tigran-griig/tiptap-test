@@ -4,11 +4,8 @@ import {useTextEditor} from '@/hooks/TextEditor/useTextEditor'
 import {EditorContent} from '@tiptap/react'
 import './index.scss'
 import {Block} from '@/Block'
-// import {useKeyPress} from "@/hooks/useKeyPress";
 import {format} from 'date-fns'
 import {CustomFloatingMenu} from '../CustomFloatingMenu'
-// import {useKeyState} from "use-key-state";
-// import {useKeyPress} from "@/hooks/useKeyPress";
 
 const dateTimeFormat = 'dd.MM.yyyy HH:mm'
 
@@ -27,19 +24,8 @@ const TextEditor = () => {
     setIsCommentModeOn,
     showCommentMenu,
   } = useTextEditor()
-  // const {cmdOpt,cmdShifts} = useKeyState(
-  //     {
-  //         cmdOpt: ['ctrl+Alt+s', 'cmd+Alt+s'],
-  //         cmdShifts:['ctrl+shift+s','cmd+shift+s']
-  //     })
 
   const formatDate = (d: any) => (d ? format(new Date(d), dateTimeFormat) : null)
-  // useEffect(() => {
-  //         if(cmdOpt.down){
-  //             debugger
-  //             toggleCommentMode()
-  //         }
-  // }, [cmdOpt.down])
 
   if (!editor) {
     return null

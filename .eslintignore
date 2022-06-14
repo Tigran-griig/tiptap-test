@@ -5,7 +5,7 @@ index.js
 commands.js
 .eslintrc.js
 ga.js
+src
 src/index.tsx
 src/App.test.tsx
-src
 craco.config.ts
