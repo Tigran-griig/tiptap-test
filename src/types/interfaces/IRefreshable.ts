@@ -1,3 +1,3 @@
 export interface IRefreshable {
-    refresh(): void;
+  refresh(): void
 }

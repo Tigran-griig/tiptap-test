@@ -5,3 +5,5 @@ index.js
 commands.js
 .eslintrc.js
 ga.js
+src/index.tsx
+src/App.test.tsx

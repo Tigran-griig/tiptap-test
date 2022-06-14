@@ -1,35 +1,33 @@
-import React, { SetStateAction, Dispatch } from "react"
-import createSafeContext from "@/lib/createSafeContext";
-import { IProject } from "@/types/interfaces/IProject";
+import React, {SetStateAction, Dispatch} from 'react'
+import createSafeContext from '@/lib/createSafeContext'
+import {IProject} from '@/types/interfaces/IProject'
 
-export const [useContext, Provider] = createSafeContext<EditorConsumerProps>();
+export const [useContext, Provider] = createSafeContext<EditorConsumerProps>()
 
 export interface EditorConsumerProps {
   project: IProject | null
 }
 
 export interface EditorProviderProps {
-  children: React.ReactNode;
-  project: IProject | null;
+  children: React.ReactNode
+  project: IProject | null
 }
 
-export function EditorProvider({ children, project }: React.PropsWithChildren<EditorProviderProps>) {
-
+export const EditorProvider = ({
+  children,
+  project,
+}: React.PropsWithChildren<EditorProviderProps>) => {
   if (!project) {
-    return null;
+    return null
   }
 
   const providerValues: EditorConsumerProps = {
-    project
-  };
+    project,
+  }
 
-  return (
-    <Provider value={providerValues}>
-      {children}
-    </Provider>
-  );
+  return <Provider value={providerValues}>{children}</Provider>
 }
 
-export const useEditorState = useContext;
+export const useEditorState = useContext
 
-export default EditorProvider;
+export default EditorProvider

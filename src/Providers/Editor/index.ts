@@ -1,2 +1,2 @@
-export * from "./EditorProvider";
-export {default} from "./EditorProvider";
+export * from './EditorProvider'
+export {default} from './EditorProvider'

@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,7 +17,7 @@
     "jsx": "react",
     "jsxFragmentFactory": "Fragment",
   },
-  "include": ["src","**/*.ts", "**/*.tsx"],
+  "include": ["src", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "extends": "./tsconfig.paths.json"
 }

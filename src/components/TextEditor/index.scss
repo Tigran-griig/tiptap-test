@@ -221,7 +221,6 @@
 }
 
 
-
 span[data-comment] {
   position: relative;
   user-select: all;
@@ -234,7 +233,7 @@ span[data-comment] {
 }
 
 
-span[data-count]:after{
+span[data-count]:after {
   content: attr(data-count);
   border-radius: 49%;
   top: -7px;
@@ -247,6 +246,6 @@ span[data-count]:after{
   box-decoration-break: clone;
 }
 
-.active-comment{
+.active-comment {
   background: #35B996;
 }

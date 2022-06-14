@@ -1,11 +1,5 @@
-import React, {Fragment} from 'react';
+import React, {Fragment} from 'react'
 
-const Layout = ({children}: { children: React.ReactNode }) => {
-    return (
-        <Fragment>
-            {children}
-        </Fragment>
-    );
-};
+const Layout = ({children}: {children: React.ReactNode}) => <>{children}</>
 
-export default Layout;
+export default Layout

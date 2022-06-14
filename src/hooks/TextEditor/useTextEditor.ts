@@ -7,77 +7,75 @@ import TextStyle from '@tiptap/extension-text-style'
 import {Color} from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 import Blockquote from '@tiptap/extension-blockquote'
-import {OrderedList} from "@tiptap/extension-ordered-list";
-import {Underline} from "@tiptap/extension-underline";
-import {Document} from "@tiptap/extension-document";
+import {OrderedList} from '@tiptap/extension-ordered-list'
+import {Underline} from '@tiptap/extension-underline'
+import {Document} from '@tiptap/extension-document'
 import {Comment} from '@/components/extensions/comment'
-import {useComment} from "../Comment/useComment"
-import {useEditorState} from "@/Providers/Editor";
-import {HardBreak} from "@tiptap/extension-hard-break";
-import {Mention} from "@tiptap/extension-mention";
-import suggestion from '@/components/suggestion';
-import {BubbleMenu} from '@tiptap/extension-bubble-menu';
-import { Extension } from '@tiptap/core'
-import {useUserState} from "@/Providers/User";
-import {Superscript} from "@tiptap/extension-superscript";
-
+import {useEditorState} from '@/Providers/Editor'
+import {HardBreak} from '@tiptap/extension-hard-break'
+import {Mention} from '@tiptap/extension-mention'
+import suggestion from '@/components/suggestion'
+import {BubbleMenu} from '@tiptap/extension-bubble-menu'
+import {Extension} from '@tiptap/core'
+import {useUserState} from '@/Providers/User'
+import {Superscript} from '@tiptap/extension-superscript'
+import {useComment} from '../Comment/useComment'
 
 export const useTextEditor = () => {
-    const {project} = useEditorState();
-    const {user} = useUserState()
-    const CustomExtension = Extension.create({
-        name: 'customExtension',
+  const {project} = useEditorState()
+  const {user} = useUserState()
+  const CustomExtension = Extension.create({
+    name: 'customExtension',
 
-        addStorage() {
-            return {
-                citations: user?.citations,
-            }
+    addStorage() {
+      return {
+        citations: user?.citations,
+      }
+    },
+  })
+
+  const editor = useEditor({
+    extensions: [
+      CustomExtension,
+      Document,
+      Comment,
+      StarterKit,
+      Text,
+      TextStyle,
+      FontFamily,
+      Color,
+      Blockquote,
+      OrderedList,
+      Underline,
+      BubbleMenu,
+      HardBreak,
+      Superscript,
+      StarterKit.configure({
+        // The Collaboration extension comes with its own history handling
+        history: false,
+      }),
+      Superscript.configure({
+        HTMLAttributes: {
+          class: 'my-custom-class',
         },
-
-    })
-
-    const editor = useEditor({
-        extensions: [
-            CustomExtension,
-            Document,
-            Comment,
-            StarterKit,
-            Text,
-            TextStyle,
-            FontFamily,
-            Color,
-            Blockquote,
-            OrderedList,
-            Underline,
-            BubbleMenu,
-            HardBreak,
-            Superscript,
-            StarterKit.configure({
-                // The Collaboration extension comes with its own history handling
-                history: false,
-            }),
-            Superscript.configure({
-                HTMLAttributes: {
-                    class: 'my-custom-class',
-                },
-            }),
-            OrderedList.configure({
-                itemTypeName: 'listItem',
-            }),
-            Link.configure({
-                openOnClick: false,
-            }),
-            Placeholder.configure({
-                placeholder: 'New story',
-            }),
-            Mention.configure({
-                HTMLAttributes: {
-                    class: 'mention',
-                },
-                suggestion,
-            }),
-        ],
-        content: `
+      }),
+      OrderedList.configure({
+        itemTypeName: 'listItem',
+      }),
+      Link.configure({
+        openOnClick: false,
+      }),
+      Placeholder.configure({
+        placeholder: 'New story',
+      }),
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'mention',
+        },
+        suggestion,
+      }),
+    ],
+    content: `
       <h2>
         Hi there,
       </h2>
@@ -95,7 +93,7 @@ export const useTextEditor = () => {
       <p>
         Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
       </p>
-      <pre><code class="language-css">body {
+      <pre><code class='language-css'>body {
   display: none;
 }</code></pre>
       <p>
@@ -107,27 +105,27 @@ export const useTextEditor = () => {
         — Mom
       </blockquote>
     `,
-        onUpdate({editor}) {
-            commentProps.findCommentsAndStoreValues();
-            commentProps.setCurrentComment(editor);
-        },
+    onUpdate({editor}) {
+      commentProps.findCommentsAndStoreValues()
+      commentProps.setCurrentComment(editor)
+    },
 
-        onSelectionUpdate({editor}) {
-            commentProps.setCurrentComment(editor);
-            commentProps.setIsTextSelected(!!editor.state.selection.content().size)
-        },
+    onSelectionUpdate({editor}) {
+      commentProps.setCurrentComment(editor)
+      commentProps.setIsTextSelected(!!editor.state.selection.content().size)
+    },
 
-        editorProps: {
-            attributes: {
-                spellcheck: 'false',
-            },
-        },
-    });
+    editorProps: {
+      attributes: {
+        spellcheck: 'false',
+      },
+    },
+  })
 
-    const commentProps = useComment({editor, project})
+  const commentProps = useComment({editor, project})
 
-    return {
-        editor,
-        ...commentProps,
-    }
+  return {
+    editor,
+    ...commentProps,
+  }
 }

@@ -1,42 +1,33 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react'
 import './mentionList.scss'
 
-export const MentionList = forwardRef((props:any, ref) => {
+export const MentionList = forwardRef((props: any, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  // @ts-ignore
-  const selectItem = index => {  // @ts-ignore
-
+  const selectItem = (index: number) => {
     const item = props.items[index]
 
-    if (item) {  // @ts-ignore
-
-      props.command({ id: item })
+    if (item) {
+      props.command({id: item})
     }
   }
 
-  const upHandler = () => {//@ts-ignore
-
-    setSelectedIndex(((selectedIndex + props.items.length) - 1) % props.items.length)
+  const upHandler = () => {
+    setSelectedIndex((selectedIndex + props.items.length - 1) % props.items.length)
   }
 
-  const downHandler = () => {//@ts-ignore
+  const downHandler = () => {
     setSelectedIndex((selectedIndex + 1) % props.items.length)
   }
 
   const enterHandler = () => {
     selectItem(selectedIndex)
   }
-//@ts-ignore
+
   useEffect(() => setSelectedIndex(0), [props.items])
 
-  useImperativeHandle(ref, () => ({//@ts-ignore
-    onKeyDown: ({ event }) => {
+  useImperativeHandle(ref, () => ({
+    onKeyDown: (event: KeyboardEvent) => {
       if (event.key === 'ArrowUp') {
         upHandler()
         return true
@@ -55,21 +46,22 @@ export const MentionList = forwardRef((props:any, ref) => {
       return false
     },
   }))
-//@ts-ignore
+
   return (
-    <div className={"items"}>
-      {props?.items.length
-        ? props.items.map((item:any, index:any) => (
+    <div className="items">
+      {props?.items.length ? (
+        props.items.map((item: any, index: any) => (
           <button
-            className={`item ${index === selectedIndex ? "isSelected" : ''}`}
+            className={`item ${index === selectedIndex ? 'isSelected' : ''}`}
             key={index}
             onClick={() => selectItem(index)}
           >
             {item}
           </button>
         ))
-        : <div className={"item"}>No result</div>
-      }
+      ) : (
+        <div className="item">No result</div>
+      )}
     </div>
   )
 })
