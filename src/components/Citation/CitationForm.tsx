@@ -2,7 +2,7 @@ import React from 'react'
 import {FieldValues, useForm} from 'react-hook-form'
 import {ICitation} from '@/types/interfaces/ICitation'
 import Button from '@mui/material/Button'
-import {useUserState} from '@/Providers/User'
+import {useUserState} from '@/Providers/User/UserProvider'
 import classes from './CitationForm.module.scss'
 
 interface CitationFormProps {

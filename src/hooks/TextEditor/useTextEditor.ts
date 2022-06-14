@@ -17,7 +17,7 @@ import {Mention} from '@tiptap/extension-mention'
 import suggestion from '@/components/suggestion'
 import {BubbleMenu} from '@tiptap/extension-bubble-menu'
 import {Extension} from '@tiptap/core'
-import {useUserState} from '@/Providers/User'
+import {useUserState} from '@/Providers/User/UserProvider'
 import {Superscript} from '@tiptap/extension-superscript'
 import {useComment} from '../Comment/useComment'
 

@@ -27,7 +27,7 @@ export const CustomSymbolGroup = (props: CustomSymbolGroupProps) => {
       <div className={classes.block}>
         <button
           type="button"
-          onClick={toggleCommentMode ? () => ({}) : toggleCommentMode}
+          onClick={toggleCommentMode}
           className={classNames(classes.icon)}
         >
           <span>ab1</span>
