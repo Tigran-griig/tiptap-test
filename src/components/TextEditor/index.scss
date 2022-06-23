@@ -1,11 +1,8 @@
+@import "../../extensions/footnotes/style/footnotes.css";
 .ProseMirror {
   min-height: 250px;
   width: 100%;
   height: 100%;
-
-  > * + * {
-    margin-top: 0.75em;
-  }
 
   > h1 {
     font-size: 2em;
@@ -151,12 +148,6 @@
   font-family: PC sans, sans-serif;
 }
 
-/* Basic editor styles */
-.ProseMirror {
-  > * + * {
-    margin-top: 0.75em;
-  }
-}
 
 /* Placeholder (at the top) */
 .ProseMirror p.is-editor-empty:first-child::before {

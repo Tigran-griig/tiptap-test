@@ -17,7 +17,8 @@ export default {
 
     return {
       onStart: (props: any) => {
-        reactRenderer = new ReactRenderer(MentionList, {
+        // @ts-ignore
+        reactRenderer = new ReactRenderer(FootnoteNode, {
           props,
           editor: props.editor,
         })

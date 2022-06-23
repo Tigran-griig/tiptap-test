@@ -5,6 +5,7 @@ import {
   FormatUnderlinedIcon,
 } from '@/components/MateriaLicon'
 import {classNames} from '@/helpers'
+// @ts-ignore
 import {Editor} from '@tiptap/core'
 import classes from './tabBar.module.scss'
 

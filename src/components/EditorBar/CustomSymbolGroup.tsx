@@ -1,5 +1,6 @@
 import React, {useState, Fragment} from 'react'
 import {classNames} from '@/helpers'
+// @ts-ignore
 import {Editor} from '@tiptap/core'
 import {UndoIcon, InsertPageBreakIcon, RedoIcon} from '@/components/MateriaLicon'
 import Modal from '@/components/Modal'
@@ -10,12 +11,12 @@ interface CustomSymbolGroupProps {
   editor: Editor | null
   // eslint-disable-next-line react/require-default-props
   toggleCommentMode?: () => void
+  toggleFootnote?: () => void
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const CustomSymbolGroup = (props: CustomSymbolGroupProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const {editor, toggleCommentMode} = props
+  const {editor, toggleFootnote} = props
   if (!editor) {
     return null
   }
@@ -27,8 +28,12 @@ export const CustomSymbolGroup = (props: CustomSymbolGroupProps) => {
       <div className={classes.block}>
         <button
           type="button"
-          onClick={toggleCommentMode}
           className={classNames(classes.icon)}
+          onClick={() => {
+            props?.editor?.isActive('footnote')
+            // @ts-ignore
+            props?.editor?.chain().focus()?.setImage({src: 'footnote'}).run()
+          }}
         >
           <span>ab1</span>
         </button>

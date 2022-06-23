@@ -12,6 +12,7 @@ interface EditorBarProps {
   editor: Editor | null
   classes?: CSSProperties
   toggleCommentMode?: () => void
+  toggleFootnote?: () => void
 }
 
 const EditorBar = (props: EditorBarProps) => {
@@ -21,6 +22,7 @@ const EditorBar = (props: EditorBarProps) => {
   if (!editor) {
     return null
   }
+
   return (
     <div className={classes.root}>
       <CustomIconGroup editor={editor} />

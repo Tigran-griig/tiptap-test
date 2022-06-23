@@ -1,5 +1,6 @@
 import React from 'react'
 import {classNames} from '@/helpers'
+// @ts-ignore
 import {Editor} from '@tiptap/core'
 
 import classes from './tabBar.module.scss'

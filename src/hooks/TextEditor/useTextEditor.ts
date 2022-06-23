@@ -1,4 +1,4 @@
-import {useEditor} from '@tiptap/react'
+import {Editor, Extension, useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {Placeholder} from '@tiptap/extension-placeholder'
 import {Text} from '@tiptap/extension-text'
@@ -10,20 +10,21 @@ import Blockquote from '@tiptap/extension-blockquote'
 import {OrderedList} from '@tiptap/extension-ordered-list'
 import {Underline} from '@tiptap/extension-underline'
 import {Document} from '@tiptap/extension-document'
-import {Comment} from '@/components/extensions/comment'
 import {useEditorState} from '@/Providers/Editor'
 import {HardBreak} from '@tiptap/extension-hard-break'
 import {Mention} from '@tiptap/extension-mention'
 import suggestion from '@/components/suggestion'
 import {BubbleMenu} from '@tiptap/extension-bubble-menu'
-import {Extension} from '@tiptap/core'
-import {useUserState} from '@/Providers/User/UserProvider'
+import {useUserState} from '@/Providers/User'
 import {Superscript} from '@tiptap/extension-superscript'
-import {useComment} from '../Comment/useComment'
+import {Footnote} from '@/extensions/footnotes'
+import {FootnoteExtension} from '../../extensions/footnotes/FootnoteExtension'
+import {useEffect} from 'react'
 
 export const useTextEditor = () => {
   const {project} = useEditorState()
-  const {user} = useUserState()
+  const {user, footnotes, setEditor, currentFootnoteHtml, setCurrentFootnoteHtml} = useUserState()
+
   const CustomExtension = Extension.create({
     name: 'customExtension',
 
@@ -34,11 +35,13 @@ export const useTextEditor = () => {
     },
   })
 
+  // @ts-ignore
   const editor = useEditor({
     extensions: [
       CustomExtension,
+      FootnoteExtension,
       Document,
-      Comment,
+      Footnote,
       StarterKit,
       Text,
       TextStyle,
@@ -57,6 +60,12 @@ export const useTextEditor = () => {
       Superscript.configure({
         HTMLAttributes: {
           class: 'my-custom-class',
+        },
+      }),
+      FootnoteExtension.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: 'prosemirror-footnote',
         },
       }),
       OrderedList.configure({
@@ -104,15 +113,10 @@ export const useTextEditor = () => {
         <br />
         — Mom
       </blockquote>
+     
     `,
     onUpdate({editor}) {
-      commentProps.findCommentsAndStoreValues()
-      commentProps.setCurrentComment(editor)
-    },
-
-    onSelectionUpdate({editor}) {
-      commentProps.setCurrentComment(editor)
-      commentProps.setIsTextSelected(!!editor.state.selection.content().size)
+      setEditor(editor as Editor)
     },
 
     editorProps: {
@@ -122,10 +126,14 @@ export const useTextEditor = () => {
     },
   })
 
-  const commentProps = useComment({editor, project})
+  useEffect(() => {
+    if (currentFootnoteHtml) {
+      editor?.commands.setContent(editor?.getHTML().concat(currentFootnoteHtml as string))
+      setCurrentFootnoteHtml('')
+    }
+  }, [currentFootnoteHtml])
 
   return {
     editor,
-    ...commentProps,
   }
 }
